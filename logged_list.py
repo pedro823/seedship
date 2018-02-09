@@ -1,3 +1,0 @@
-from 
-
-class LoggedList(list):

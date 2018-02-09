@@ -38,19 +38,20 @@ def parse_line(line):
         print('Rolling', dice_roll[0], dice_roll[1] + '-faced dice.')
     return integer_line
 
-while True:
-    try:
-        line = input('>>> ').strip()
-        _ = os.system('cls' if os.name == 'nt' else 'clear')
-        if line == 'quit()':
+if __name__ == '__main__':
+    while True:
+        try:
+            line = input('>>> ').strip()
+            _ = os.system('cls' if os.name == 'nt' else 'clear')
+            if line == 'quit()':
+                break
+            if line == '':
+                continue
+            parsed_line = parse_line(line)
+            dice_roll(parsed_line)
+        except EOFError:
             break
-        if line == '':
-            continue
-        parsed_line = parse_line(line)
-        dice_roll(parsed_line)
-    except EOFError:
-        break
-    except KeyboardInterrupt:
-        break
-    except Exception as ex:
-        print(str(ex))
+        except KeyboardInterrupt:
+            break
+        except Exception as ex:
+            print(str(ex))

@@ -2,6 +2,8 @@ from random import SystemRandom as random
 r = random()
 import os
 import time
+import datetime
+from logger import Logger
 from settings import *
 
 class Error(Exception):
@@ -18,6 +20,8 @@ def print_noln(*args, **kwargs):
 class Scanner:
 
     def __init__(self):
+        log_file = 'log/sdshp_' + datetime.datetime.now().isoformat()
+        self.logger = Logger(self, outfile=log_file)
         self.planet_list = []
         self.scanner_status = {
             'atmosfera': 100,
@@ -101,6 +105,7 @@ class Scanner:
         random_planet = dict(
                           (key, self.planet_rng[key][self.scanner_levels[key] if bonus else 0][r.randint(0, 99)])
                           for key in self.scanner_status)
+        self.logger.log('generated planet', random_planet, 'with self.scanner_levels =', self.scanner_levels)
         self.planet_list.append(random_planet)
         return random_planet
 
@@ -109,33 +114,52 @@ class Scanner:
             string = Color.WHITE + key.capitalize()
             print_noln(string)
             for i in range(3):
-                time.sleep(0.3)
+                # time.sleep(0.3)
                 print_noln('.')
 
             if hits.get(key) or probe:
                 result = value[1] + value[0] + Color.RESET
             else:
                 result = SCAN_FAILURE
-            time.sleep(0.5)
+            # time.sleep(0.5)
             print(' ' + result)
-            time.sleep(1)
+            # time.sleep(1)
         if probe:
-            self.__print_planet_features()
+            features = self.generate_planet_features(planet)
+            for feature in features:
+                # time.sleep(0.7)
+                print(feature[1] + feature[0] + Color.RESET)
 
-    def __print_planet_features(self):
-        
+    def generate_planet_features(self, planet):
+        # Calculates chances based on settings
+        matrix_features = [value[2:] for value in planet.values()]
+        chances = []
+        for idx, chance in enumerate(PROBE_HIT_CHANCE):
+            for line in matrix_features:
+                chance *= line[idx]
+            chances.append(chance)
 
-a = Scanner()
-a.damage_status('atmosfera', 35)
-a.damage_status('água', 200)
-a.damage_status('recursos', 10)
-a.damage_status('gravidade', 80)
-for i in range(2):
-    a.upgrade_scanner('atmosfera')
-    a.upgrade_scanner('água')
-    a.upgrade_scanner('gravidade')
-    a.upgrade_scanner('recursos')
-    a.upgrade_scanner('temperatura')
-a.print_status()
-for i in range(10):
-    a.print_planet(a.generate_planet(), a.generate_hits(), True)
+        features = []
+        # Rolls to see if it hits
+        for idx, feature_chance in enumerate(PROBE_FEATURES):
+            if r.random() < chances[idx]:
+                # Success, adds sample to features
+                features.append(r.sample(feature_chance, 1)[0])
+        # self.logger.log('planet', planet, 'generated features', features)
+        return features
+
+if __name__ == '__main__':
+    a = Scanner()
+    # a.damage_status('atmosfera', 35)
+    # a.damage_status('água', 200)
+    # a.damage_status('recursos', 10)
+    # a.damage_status('gravidade', 80)
+    # for i in range(2):
+    #     a.upgrade_scanner('atmosfera')
+    #     a.upgrade_scanner('água')
+    #     a.upgrade_scanner('gravidade')
+    #     a.upgrade_scanner('recursos')
+    #     a.upgrade_scanner('temperatura')
+    a.print_status()
+    for i in range(10):
+        a.print_planet(a.generate_planet(), a.generate_hits(), True)

@@ -47,39 +47,39 @@ SCAN_SETTINGS = {
 
 AVAIL_OPTIONS = {
     'atmosfera': [
-        ('Corrosiva', Color.RED,                        0.1, 0.1, 1.0, 1.0), # 0
-        ('Nenhuma', Color.RED,                          0.1, 0.1, 1.0, 1.0), # 1
-        ('Rarefeita', Color.YELLOW,                     0.9, 0.9, 1.0, 1.0), # 2
-        ('Levemente Rarefeita', Color.LIGHT_GREEN,      1.0, 1.0, 1.0, 1.0), # 3
-        ('Ótima', Color.GREEN,                          1.2, 1.2, 1.0, 1.0), # 4
-        ('Não Respirável', Color.RED,                   0.8, 0.1, 1.0, 1.0) # 5
+        ('Corrosiva', Color.RED,                        0.1, 0.1, 1.0, 0.4, 1.0), # 0
+        ('Nenhuma', Color.RED,                          0.1, 0.1, 1.0, 0.4, 1.0), # 1
+        ('Rarefeita', Color.YELLOW,                     0.9, 0.9, 1.0, 0.7, 1.0), # 2
+        ('Levemente Rarefeita', Color.LIGHT_GREEN,      1.0, 1.0, 1.0, 0.9, 1.0), # 3
+        ('Ótima', Color.GREEN,                          1.2, 1.2, 1.0, 1.0, 1.0), # 4
+        ('Não Respirável', Color.RED,                   0.8, 0.1, 1.0, 0.4, 1.0)  # 5
     ],
     'temperatura': [
-        ('Muito Baixa', Color.RED,                      0.3, 0.9, 1.0, 1.0), # 0
-        ('Baixa', Color.YELLOW,                         0.5, 1.0, 1.0, 1.0), # 1
-        ('Boa', Color.GREEN,                            1.2, 1.2, 1.0, 1.0), # 2
-        ('Alta', Color.YELLOW,                          1.0, 1.0, 1.0, 1.0), # 3
-        ('Muito Alta', Color.RED,                       0.3, 0.3, 1.0, 1.0) # 4
+        ('Muito Baixa', Color.RED,                      0.3, 0.9, 1.0, 0.1, 1.0), # 0
+        ('Baixa', Color.YELLOW,                         0.5, 1.0, 1.0, 0.7, 1.0), # 1
+        ('Boa', Color.GREEN,                            1.2, 1.2, 1.0, 1.0, 1.0), # 2
+        ('Alta', Color.YELLOW,                          1.0, 1.0, 1.0, 0.7, 1.0), # 3
+        ('Muito Alta', Color.RED,                       0.3, 0.3, 1.0, 0.4, 1.0)  # 4
     ],
     'água': [
-        ('Nenhuma', Color.RED,                          0.1, 0.1, 0.7, 0.7), # 0
-        ('Traços', Color.RED,                           0.7, 0.4. 1.0, 1.0), # 1
-        ('Escassa', Color.YELLOW,                       1.0, 0.9, 1.0, 1.0), # 2
-        ('Plena', Color.GREEN,                          1.0, 1.0, 1.0, 1.0), # 3
-        ('Planeta coberto de oceanos', Color.YELLOW,    1.0, 1.0, 0.1, 1.0) # 4
+        ('Nenhuma', Color.RED,                          0.1, 0.1, 0.7, 0.3, 1.0), # 0
+        ('Traços', Color.RED,                           0.7, 0.4, 1.0, 0.6, 1.0), # 1
+        ('Escassa', Color.YELLOW,                       1.0, 0.9, 1.0, 0.7, 1.0), # 2
+        ('Plena', Color.GREEN,                          1.1, 1.1, 1.0, 1.0, 1.0), # 3
+        ('Planeta coberto de oceanos', Color.YELLOW,    1.0, 1.0, 0.1, 0.4, 1.0)  # 4
     ],
     'gravidade': [
-        ('Muito Baixa', Color.RED,                      0.1, 0.1, 0.7, 0.0), # 0
-        ('Baixa', Color.YELLOW,                         0.8, 0.8, 1.0, 0.4), # 1
-        ('Boa', Color.GREEN,                            1.1, 1.1, 1.0, 1.0), # 2
-        ('Alta', Color.YELLOW,                          ), # 3
-        ('Muito Alta', Color.RED) # 4
+        ('Muito Baixa', Color.RED,                      0.1, 0.1, 0.7, 0.3, 0.0), # 0
+        ('Baixa', Color.YELLOW,                         0.8, 0.8, 1.0, 0.9, 0.3), # 1
+        ('Boa', Color.GREEN,                            1.1, 1.1, 1.0, 1.0, 0.7), # 2
+        ('Alta', Color.YELLOW,                          0.8, 0.8, 1.0, 0.9, 1.1), # 3
+        ('Muito Alta', Color.RED,                       0.5, 0.2, 0.7, 0.3, 1.3)  # 4
     ],
     'recursos': [
-        ('Nenhum', Color.RED), # 0
-        ('Escassos', Color.YELLOW), # 1
-        ('Levemente escassos', Color.LIGHT_GREEN), # 2
-        ('Plenos', Color.GREEN) # 3
+        ('Nenhum', Color.RED,                           1.0, 0.6, 0.7, 0.0, 1.0), # 0
+        ('Escassos', Color.YELLOW,                      1.0, 0.9, 1.0, 0.3, 1.0), # 1
+        ('Levemente escassos', Color.LIGHT_GREEN,       1.0, 1.0, 1.0, 0.6, 1.0), # 2
+        ('Plenos', Color.GREEN,                         1.0, 1.0, 1.0, 1.0, 1.0)  # 3
     ]
 }
 
@@ -103,10 +103,12 @@ PROBE_FEATURES = [
     },
     {
         ('Monumentos abandonados', Color.LIGHT_GREEN),
+        ('Materiais/minérios desconhecidos', Color.GREEN)
+    },
+    {
         ('Satélite rico em minérios', Color.GREEN),
-        ('Satélite com minérios', Color.LIGHT_GREEN),
-        ('Materiais/minérios desconhecidos', Color.YELLOW)
+        ('Satélite com minérios', Color.LIGHT_GREEN)
     }
 ]
 
-PROBE_HIT_CHANCE = []
+PROBE_HIT_CHANCE = [0.25, 0.25, 0.25, 0.25, 0.25]
