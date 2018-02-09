@@ -1,0 +1,3 @@
+from 
+
+class LoggedList(list):
