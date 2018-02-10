@@ -6,14 +6,6 @@ import datetime
 from logger import Logger
 from settings import *
 
-class Error(Exception):
-    class NoSuchScanner:
-        pass
-    class CannotUpgrade:
-        pass
-    class BadConfig:
-        pass
-
 def print_noln(*args, **kwargs):
     print(*args, **kwargs, end='', flush=True)
 
@@ -22,6 +14,7 @@ class Scanner:
     def __init__(self):
         log_file = 'log/sdshp_' + datetime.datetime.now().isoformat()
         self.logger = Logger(self, outfile=log_file)
+        self.probes = 10
         self.planet_list = []
         self.scanner_status = {
             'atmosfera': 100,
@@ -78,15 +71,13 @@ class Scanner:
             string = str_left.ljust(17) + str_right.ljust(18) + '(' + str(self.scanner_levels[key]) + ')'
             print(string)
             time.sleep(0.2)
+        print('Sondas restantes: %s' % self.probes)
 
     def damage_status(self, key, amount):
         if self.scanner_status.get(key) is None:
-            raise Error.NoSuchScanner(key + ' não é um scanner')
+            raise Exception(key + ' não é um scanner')
         amount = int(amount) # Auto raises error
-        if self.scanner_status[key] >= amount:
-            self.scanner_status[key] -= amount
-        else:
-            self.scanner_status[key] = 0
+        self.scanner_status[key] = max(self.scanner_status[key] - amount, 0)
 
     def upgrade_scanner(self, key):
         if self.scanner_levels.get(key) is None:
@@ -109,44 +100,47 @@ class Scanner:
         self.planet_list.append(random_planet)
         return random_planet
 
-    def print_planet(self, planet, hits, probe=False):
+    def print_planet(self, planet, hits, probe=False, features=None):
         for key, value in planet.items():
             string = Color.WHITE + key.capitalize()
             print_noln(string)
             for i in range(3):
-                # time.sleep(0.3)
+                time.sleep(0.3)
                 print_noln('.')
 
             if hits.get(key) or probe:
                 result = value[1] + value[0] + Color.RESET
             else:
                 result = SCAN_FAILURE
-            # time.sleep(0.5)
+            time.sleep(0.5)
             print(' ' + result)
-            # time.sleep(1)
-        if probe:
-            features = self.generate_planet_features(planet)
+            time.sleep(1)
+        if probe and features:
             for feature in features:
-                # time.sleep(0.7)
+                time.sleep(0.7)
                 print(feature[1] + feature[0] + Color.RESET)
 
     def generate_planet_features(self, planet):
         # Calculates chances based on settings
-        matrix_features = [value[2:] for value in planet.values()]
-        chances = []
-        for idx, chance in enumerate(PROBE_HIT_CHANCE):
-            for line in matrix_features:
-                chance *= line[idx]
-            chances.append(chance)
+        if self.probes:
+            matrix_features = [value[2:] for value in planet.values()]
+            chances = []
+            for idx, chance in enumerate(PROBE_HIT_CHANCE):
+                for line in matrix_features:
+                    chance *= line[idx]
+                chances.append(chance)
 
-        features = []
-        # Rolls to see if it hits
-        for idx, feature_chance in enumerate(PROBE_FEATURES):
-            if r.random() < chances[idx]:
-                # Success, adds sample to features
-                features.append(r.sample(feature_chance, 1)[0])
-        # self.logger.log('planet', planet, 'generated features', features)
-        return features
+            features = []
+            # Rolls to see if it hits
+            for idx, feature_chance in enumerate(PROBE_FEATURES):
+                if r.random() < chances[idx]:
+                    # Success, adds sample to features
+                    features.append(r.sample(feature_chance, 1)[0])
+            # self.logger.log('planet', planet, 'generated features', features)
+            self.probes -= 1
+            return features
+        else:
+            raise Exception('Acabaram as sondas!')
 
 if __name__ == '__main__':
     a = Scanner()

@@ -1,12 +1,7 @@
 from random import SystemRandom as random
+from settings import Color
 import os
 r = random()
-
-YELLOW = '\033[1;33m'
-LIGHT_BLUE = '\033[1;34m'
-LIGHT_RED = '\033[1;31m'
-CLEAR = '\033[0;37m'
-
 
 def dice_roll(parsed_line):
     all_sum = 0
@@ -16,20 +11,20 @@ def dice_roll(parsed_line):
         faces = roll[1]
         all_rolls = [r.randint(1, faces) for _ in range(amount)]
         for index, single_roll in enumerate(all_rolls):
-            print(LIGHT_BLUE
+            print(Color.LIGHT_BLUE
                   + str(amount) + 'd' + str(faces) + ':'
-                  + YELLOW
+                  + Color.YELLOW
                   + ' Roll #' + str(index + 1) + ': '
-                  + CLEAR
+                  + Color.RESET
                   + str(single_roll))
         single_sum = sum(all_rolls)
-        print(YELLOW,
+        print(Color.YELLOW,
               '\tPARTIAL SUM:',
               single_sum,
-              CLEAR)
+              Color.RESET)
         all_sum += single_sum
     print('-' * 40)
-    print(LIGHT_RED + 'TOTAL SUM:', all_sum, CLEAR)
+    print(Color.LIGHT_RED + 'TOTAL SUM:', all_sum, Color.RESET)
 
 def parse_line(line):
     formatted_line = [dice.split('d') for dice in line.split(' ')]
