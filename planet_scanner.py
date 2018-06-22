@@ -81,21 +81,23 @@ class Scanner:
 
     def upgrade_scanner(self, key):
         if self.scanner_levels.get(key) is None:
-            raise Error.NoSuchScanner(key + ' não é um scanner')
+            raise Exception(key + ' não é um scanner')
         if self.scanner_levels[key] >= 2:
-            raise Error.CannotUpgrade(key + ' está no upgrade máximo')
+            raise Exception(key + ' está no upgrade máximo')
         self.scanner_levels[key] += 1
 
     def generate_hits(self):
         random_hits = dict(
                           (key, True if r.randint(0, 99) < self.scanner_status[key] else False)
-                          for key in self.scanner_status)
+                          for key in self.scanner_status
+                          )
         return random_hits
 
     def generate_planet(self, bonus=True):
         random_planet = dict(
                           (key, self.planet_rng[key][self.scanner_levels[key] if bonus else 0][r.randint(0, 99)])
-                          for key in self.scanner_status)
+                          for key in self.scanner_status
+                          )
         self.logger.log('generated planet', random_planet, 'with self.scanner_levels =', self.scanner_levels)
         self.planet_list.append(random_planet)
         return random_planet

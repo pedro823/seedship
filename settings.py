@@ -1,12 +1,13 @@
 class Error(Exception):
-    class NoSuchScanner:
-        pass
-    class CannotUpgrade:
-        pass
-    class BadConfig:
-        pass
-    class CommandError:
-        pass
+    pass
+class NoSuchScanner(Error):
+    pass
+class CannotUpgrade(Error):
+    pass
+class BadConfig(Error):
+    pass
+class CommandError(Error):
+    pass
 
 class Color:
     BLACK =        '\033[0;30m'
@@ -135,6 +136,14 @@ AVAIL_COMMANDS = {
     'exit'
 }
 
+HELP_TEXT = [
+    'damage <scanner> <quantia> -- Reporta dano em um scanner.',
+    'status -- Reporta status dos scanners e da nave.',
+    'upgrade <scanner> -- ',
+    'scan -- Escaneia o planeta mais perto.',
+    'rescan -- '
+]
+
 AVAIL_INSULTS = [
     'IA, tá tudo bem? D:',
     'Esse não é um comando válido...',
@@ -178,6 +187,6 @@ WAKE_UP_SEQ = (
 
 MOTD = (
     'Olá de novo, IA.',
-    'A humanidade conta em você, IA.',
+    'A humanidade conta com você, IA.',
     'Espero que tenham te acordado por causa de um planeta :)'
 )
