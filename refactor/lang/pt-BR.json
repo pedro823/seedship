@@ -1,0 +1,48 @@
+{
+  "scanner": {
+    "categories": {
+      "atmosphere": "Atmosfera",
+      "temperature": "Temperatura",
+      "water": "Água",
+      "resources": "Recursos"
+    },
+    "hits": {
+      "atmosphere": {
+        "corrosive": "Corrosiva",
+        "none": "Nenhuma",
+        "rare": "Rarefeita",
+        "semi_rare": "Levemente Rarefeita",
+        "good": "Ótima",
+        "unbreathable": "Não Respirável"
+      },
+      "temperature": {
+        "very_low": "Muito Baixa",
+        "low": "Baixa",
+        "good": "Boa",
+        "high": "Alta",
+        "very_high": "Muito Alta"
+      },
+      "water": {
+        "none": "Nenhuma",
+        "trace": "Traços",
+        "scarce": "Escassa",
+        "good": "Plena",
+        "planet_wide_ocean": "Planeta coberto de oceanos"
+      },
+      "gravity": {
+        "very_low": "Muito Baixa",
+        "low": "Baixa",
+        "good": "Boa",
+        "High": "Alta",
+        "very_high": "Muito Alta"
+      },
+      "resources": {
+        "none": "Nenhum",
+        "scarce": "Escassos",
+        "lightly_scarce": "Levemente escassos",
+        "good": "Plenos"
+      }
+    },
+    "scan_failed": "Scan falhou."
+  }
+}

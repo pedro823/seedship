@@ -31,7 +31,7 @@ class ShipStatus:
         status = self.ship_status
         a, b, c = status.get(key), status['sistemas'].get(key), status['bancos de dados'].get(key)
 
-        if a is and b is None and c is None:
+        if a is None and b is None and c is None:
             raise NoSuchScanner(key + 'não é uma parte da nave!')
 
         amount = int(amount)

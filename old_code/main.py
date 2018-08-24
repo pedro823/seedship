@@ -4,14 +4,11 @@ from settings import *
 import random as r
 import os
 from time import sleep
+from seedship import Seedship, AVAIL_COMMANDS
 
 class Prompt:
-    def __init__(self):
-        self.planet = None
-        self.hits = None
-        self.has_probed = False
-        self.features = None
-        self.scanner = Scanner()
+    def __init__(self, seedship):
+        self.seedship = seedship
 
     def cinematic_sleep(self):
         print_noln('Preparando para dormir')
@@ -24,7 +21,7 @@ class Prompt:
             print(line)
             sleep(0.15)
         sleep(1)
-        _ = os.system('cls' if os.name == 'nt' else 'clear')
+        self.__clear_screen()
         print('[PRESSIONE ENTER PARA ACORDAR]')
         input()
         for line in WAKE_UP_SEQ:
@@ -81,7 +78,12 @@ class Prompt:
             sleep(0.1)
             print(line)
 
-prompt = Prompt()
+    @staticmethod
+    def __clear_screen():
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+
+prompt = Prompt(Seedship())
 while True:
     try:
         line = input('sdshp> ').strip()
@@ -105,6 +107,8 @@ while True:
                 parsed_line = parse_line(line)
                 dice_roll(parsed_line)
             except ValueError:
+                sleep(0.3)
+                print('Isso não é um comando válido!')
                 sleep(0.6)
                 print(r.choice(AVAIL_INSULTS))
     except EOFError:

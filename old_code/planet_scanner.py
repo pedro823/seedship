@@ -107,7 +107,7 @@ class Scanner:
             string = Color.WHITE + key.capitalize()
             print_noln(string)
             for i in range(3):
-                time.sleep(0.3)
+                time.sleep(0.14)
                 print_noln('.')
 
             if hits.get(key) or probe:
@@ -119,8 +119,9 @@ class Scanner:
             time.sleep(1)
         if probe and features:
             for feature in features:
-                time.sleep(0.7)
+                time.sleep(0.55)
                 print(feature[1] + feature[0] + Color.RESET)
+                time.sleep(0.12)
 
     def generate_planet_features(self, planet):
         # Calculates chances based on settings
