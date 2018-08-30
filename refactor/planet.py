@@ -1,4 +1,5 @@
 from language import LANG_DICT
+import random as r
 import settings
 
 
@@ -16,11 +17,11 @@ class Planet:
                                         'water',
                                         'resources'])
 
-    ATMOSPHERE_POSSIBILITIES = settings.AvailableHits.Atmosphere.all_possible
-    TEMPERATURE_POSSIBILITIES = settings.AvailableHits.Temperature.all_possible
-    GRAVITY_POSSIBILITIES = settings.AvailableHits.Gravity.all_possible
-    WATER_POSSIBILITIES = settings.AvailableHits.Water.all_possible
-    RESOURCES_POSSIBILITIES = settings.AvailableHits.Resources.all_possible
+    ATMOSPHERE_POSSIBILITIES = settings.AvailableFeatures.Atmosphere.all_possible
+    TEMPERATURE_POSSIBILITIES = settings.AvailableFeatures.Temperature.all_possible
+    GRAVITY_POSSIBILITIES = settings.AvailableFeatures.Gravity.all_possible
+    WATER_POSSIBILITIES = settings.AvailableFeatures.Water.all_possible
+    RESOURCES_POSSIBILITIES = settings.AvailableFeatures.Resources.all_possible
 
     possibility_map = {
         'atmosphere': ATMOSPHERE_POSSIBILITIES,
@@ -42,10 +43,16 @@ class Planet:
 
     @classmethod
     def generate_feature(cls, scanner, possibilities):
+        ''' Generates a random number and matches it with a planet's feature '''
         upgrade_level = scanner.upgrade_level
-
-        pass
-
+        random_number = r.randint(1, 100)
+        current_sum = 0
+        for feature in possibilities:
+            if random_number <= current_sum + feature.probability[upgrade_level]:
+                return feature
+            current_sum += feature.probability[upgrade_level]
+        raise Exception(f'Unexpected branch. random_number={random_number}'
+                        + f'current_sum={current_sum} possibilities={possibilities}')
 
     def __init__(self, atmosphere, gravity, temperature, water, resources):
         self.atmosphere = atmosphere
@@ -53,3 +60,7 @@ class Planet:
         self.temperature = temperature
         self.water = water
         self.resources = resources
+        self.landscape = self.generate_landscape()
+
+    def generate_landscape(self):
+        

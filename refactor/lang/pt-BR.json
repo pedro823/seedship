@@ -46,12 +46,36 @@
     },
     "scan_failed": "Scan falhou."
   },
+  "landscape": {
+    "plants": {
+      "unicelular": "Plantas unicelulares",
+      "venomous": "Plantas venenosas",
+      "edible": "Plantas comestíveis"
+    },
+    "animals": {
+      "unicelular": "Vida animal unicelular",
+      "dangerous": "Vida animal perigosa",
+      "tameable": "Vida animal domesticável"
+    },
+    "terrain": {
+      "dangerous": "Terreno perigoso",
+      "beautiful": "Paisagem bonita",
+      "habitable": "Cavernas habitáveis"
+    },
+    "monuments": {
+      "abandoned": "Monumentos abandonados",
+      "unknown_minerals": "Materiais/minérios desconhecidos"
+    },
+    "satellites": {
+      "resource_rich": "Satélite rico em minérios",
+      "resourceful": "Satélite com minérios"
+    }
+  },
   "seedship_modules": {
     "atmosphere_scanner": "Atmosfera",
     "water_scanner": "Água",
     "resources_scanner": "Recursos",
     "gravity_scanner": "Gravidade",
-    "temperature_scanner": "Temperatura",
-
+    "temperature_scanner": "Temperatura"
   }
 }

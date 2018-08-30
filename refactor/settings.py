@@ -31,14 +31,14 @@ SCAN_HIT_PROBABILITY = {
 
 
 @staticmethod
-def __translate(scanner_type: str, quality: str) -> str:
+def __translate_feature(scanner_type: str, quality: str) -> str:
     return TXT['scanner']['hits'][scanner_type][quality]
 
 
-class AvailableHits:
+class AvailableFeatures:
     class Atmosphere:
         class Corrosive:
-            text = __translate('atmosphere', 'corrosive')
+            text = __translate_feature('atmosphere', 'corrosive')
             color = Color.RED,
             feature_multiplier = {
                 'plants': 0.1,
@@ -50,7 +50,7 @@ class AvailableHits:
             probability = [10, 5, 0]  # 0, 1, 2
 
         class NoAtmosphere:
-            text = __translate('atmosphere', 'none')
+            text = __translate_feature('atmosphere', 'none')
             color = Color.RED,
             feature_multiplier = {
                 'plants': 0.1,
@@ -62,7 +62,7 @@ class AvailableHits:
             probability = [20, 10, 0]  # 0, 1, 2
 
         class Rare:
-            text = __translate('atmosphere', 'rare')
+            text = __translate_feature('atmosphere', 'rare')
             color = Color.YELLOW,
             feature_multiplier = {
                 'plants': 0.9,
@@ -74,7 +74,7 @@ class AvailableHits:
             probability = [20, 10, 5]  # 0, 1, 2
 
         class SemiRare:
-            text = __translate('atmosphere', 'semi_rare')
+            text = __translate_feature('atmosphere', 'semi_rare')
             color = Color.LIGHT_GREEN,
             feature_multiplier = {
                 'plants': 1.0,
@@ -86,7 +86,7 @@ class AvailableHits:
             probability = [15, 25, 30]  # 0, 1, 2
 
         class Good:
-            text = __translate('atmosphere', 'semi_rare')
+            text = __translate_feature('atmosphere', 'semi_rare')
             color = Color.GREEN,
             feature_multiplier = {
                 'plants': 1.2,
@@ -98,7 +98,7 @@ class AvailableHits:
             probability = [20, 40, 60]  # 0, 1, 2
 
         class Unbreathable:
-            text = __translate('atmosphere', 'unbreathable')
+            text = __translate_feature('atmosphere', 'unbreathable')
             color = Color.RED,
             feature_multiplier = {
                 'plants': 0.8,
@@ -118,7 +118,7 @@ class AvailableHits:
 
     class Temperature:
         class VeryLow:
-            text = __translate('temperature', 'very_low')
+            text = __translate_feature('temperature', 'very_low')
             color = Color.RED,
             feature_multiplier = {
                 'plants': 0.3,
@@ -130,7 +130,7 @@ class AvailableHits:
             probability = [20, 5, 0]  # 0, 1, 2
 
         class Low:
-            text = __translate('temperature', 'low')
+            text = __translate_feature('temperature', 'low')
             color = Color.YELLOW,
             feature_multiplier = {
                 'plants': 0.5,
@@ -142,7 +142,7 @@ class AvailableHits:
             probability = [20, 20, 15]  # 0, 1, 2
 
         class Good:
-            text = __translate('temperature', 'good')
+            text = __translate_feature('temperature', 'good')
             color = Color.GREEN,
             feature_multiplier = {
                 'plants': 1.2,
@@ -154,7 +154,7 @@ class AvailableHits:
             probability = [20, 45, 70]  # 0, 1, 2
 
         class High:
-            text = __translate('temperature', 'high')
+            text = __translate_feature('temperature', 'high')
             color = Color.YELLOW,
             feature_multiplier = {
                 'plants': 1.0,
@@ -166,7 +166,7 @@ class AvailableHits:
             probability = [20, 20, 15]  # 0, 1, 2
 
         class VeryHigh:
-            text = __translate('temperature', 'very_high')
+            text = __translate_feature('temperature', 'very_high')
             color = Color.RED,
             feature_multiplier = {
                 'plants': 1.0,
@@ -181,7 +181,7 @@ class AvailableHits:
 
     class Water:
         class NoWater:
-            text = __translate('water', 'none')
+            text = __translate_feature('water', 'none')
             color = Color.RED
             feature_multiplier = {
                 'plants': 0.1,
@@ -193,7 +193,7 @@ class AvailableHits:
             probability = [20, 5, 0]  # 0, 1, 2
 
         class Trace:
-            text = __translate('water', 'trace')
+            text = __translate_feature('water', 'trace')
             color = Color.RED
             feature_multiplier = {
                 'plants': 0.6,
@@ -205,7 +205,7 @@ class AvailableHits:
             probability = [20, 15, 5]  # 0, 1, 2
 
         class Scarce:
-            text = __translate('water', 'scarce')
+            text = __translate_feature('water', 'scarce')
             color = Color.YELLOW
             feature_multiplier = {
                 'plants': 1.0,
@@ -217,7 +217,7 @@ class AvailableHits:
             probability = [20, 20, 10]  # 0, 1, 2
 
         class Good:
-            text = __translate('water', 'good')
+            text = __translate_feature('water', 'good')
             color = Color.GREEN
             feature_multiplier = {
                 'plants': 1.1,
@@ -229,7 +229,7 @@ class AvailableHits:
             probability = [20, 45, 75]  # 0, 1, 2
 
         class PlanetWideOcean:
-            text = __translate('water', 'planet_wide_ocean')
+            text = __translate_feature('water', 'planet_wide_ocean')
             color = Color.YELLOW
             feature_multiplier = {
                 'plants': 1.0,
@@ -244,7 +244,7 @@ class AvailableHits:
 
     class Gravity:
         class VeryLow:
-            text = __translate('gravity', 'very_low')
+            text = __translate_feature('gravity', 'very_low')
             color = Color.RED
             feature_multiplier = {
                 'plants': 0.1,
@@ -256,7 +256,7 @@ class AvailableHits:
             probability = [20, 15, 15]  # 0, 1, 2
 
         class Low:
-            text = __translate('gravity', 'low')
+            text = __translate_feature('gravity', 'low')
             color = Color.YELLOW
             feature_multiplier = {
                 'plants': 0.8,
@@ -268,7 +268,7 @@ class AvailableHits:
             probability = [20, 15, 15]  # 0, 1, 2
 
         class Good:
-            text = __translate('gravity', 'good')
+            text = __translate_feature('gravity', 'good')
             color = Color.GREEN
             feature_multiplier = {
                 'plants': 1.1,
@@ -280,7 +280,7 @@ class AvailableHits:
             probability = [20, 15, 15]  # 0, 1, 2
 
         class High:
-            text = __translate('gravity', 'high')
+            text = __translate_feature('gravity', 'high')
             color = Color.YELLOW
             feature_multiplier = {
                 'plants': 0.8,
@@ -292,7 +292,7 @@ class AvailableHits:
             probability = [20, 15, 15]  # 0, 1, 2
 
         class VeryHigh:
-            text = __translate('gravity', 'very_high')
+            text = __translate_feature('gravity', 'very_high')
             color = Color.RED
             feature_multiplier = {
                 'plants': 0.5,
@@ -307,7 +307,7 @@ class AvailableHits:
 
     class Resources:
         class NoResource:
-            text = __translate('resources', 'none')
+            text = __translate_feature('resources', 'none')
             color = Color.RED
             feature_multiplier = {
                 'plants': 1.0,
@@ -319,7 +319,7 @@ class AvailableHits:
             probability = [20, 15, 15]  # 0, 1, 2
 
         class Scarce:
-            text = __translate('resources', 'scarce')
+            text = __translate_feature('resources', 'scarce')
             color = Color.YELLOW
             feature_multiplier = {
                 'plants': 1.0,
@@ -331,7 +331,7 @@ class AvailableHits:
             probability = [20, 15, 15]  # 0, 1, 2
 
         class LightlyScarce:
-            text = __translate('resources', 'lightly_scarce')
+            text = __translate_feature('resources', 'lightly_scarce')
             color = Color.LIGHT_GREEN
             feature_multiplier = {
                 'plants': 1.0,
@@ -343,7 +343,7 @@ class AvailableHits:
             probability = [20, 15, 15]  # 0, 1, 2
 
         class Good:
-            text = __translate('resources', 'good')
+            text = __translate_feature('resources', 'good')
             color = Color.GREEN
             feature_multiplier = {
                 'plants': 1.0,
@@ -357,6 +357,70 @@ class AvailableHits:
         all_possible = [NoResource, Scarce, LightlyScarce, Good]
 
     all_hits = [Atmosphere, Temperature]
+
+
+def __translate_landscape(type, quality):
+    return TXT['landscape'][type][quality]
+
+
+class AvailableLandscape:
+    class Plants:
+        class Unicelular:
+            text = __translate_feature('plants', 'unicelular')
+            color = Color.YELLOW
+
+        class Venomous:
+            text = __translate_feature('plants', 'venomous')
+            color = Color.RED
+
+        class Edible:
+            text = __translate_feature('plants', 'edible')
+            color = Color.GREEN
+
+    class Animals:
+        class Unicelular:
+            text = __translate_feature('animals', 'unicelular')
+            color = Color.YELLOW
+
+        class Dangerous:
+            text = __translate_feature('animals', 'dangerous')
+            color = Color.RED
+
+        class Tameable:
+            text = __translate_feature('animals', 'tameable')
+            color = Color.GREEN
+
+    class Terrain:
+        class Dangerous:
+            text = __translate_feature('terrain', 'dangerous')
+            color = Color.RED
+
+        class Beautiful:
+            text = __translate_feature('terrain', 'beautiful')
+            color = Color.GREEN
+
+        class Habitable:
+            text = __translate_feature('terrain', 'habitable')
+            color = Color.GREEN
+
+    class Monuments:
+        class Abandoned:
+            text = __translate_feature('monuments', 'abandoned')
+            color = Color.LIGHT_GREEN
+
+        class UnknownMinerals:
+            text = __translate_feature('monuments', 'unknown_minerals')
+            color = Color.GREEN
+
+    class Satellites:
+        class ResoureRich:
+            text = __translate_feature('satellites', 'resource_rich')
+            color = Color.GREEN
+
+        class Resourceful:
+            text = __translate_feature('satellites', 'resourceful')
+            color = Color.LIGHT_GREEN
+
 
 SCAN_FAILURE = Color.RED + TXT['scanner']['scan_failed'] + Color.RESET
 
