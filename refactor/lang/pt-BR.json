@@ -3,6 +3,7 @@
     "categories": {
       "atmosphere": "Atmosfera",
       "temperature": "Temperatura",
+      "gravity": "Gravidade",
       "water": "Água",
       "resources": "Recursos"
     },
@@ -44,5 +45,13 @@
       }
     },
     "scan_failed": "Scan falhou."
+  },
+  "seedship_modules": {
+    "atmosphere_scanner": "Atmosfera",
+    "water_scanner": "Água",
+    "resources_scanner": "Recursos",
+    "gravity_scanner": "Gravidade",
+    "temperature_scanner": "Temperatura",
+
   }
 }

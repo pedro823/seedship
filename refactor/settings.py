@@ -29,71 +29,362 @@ SCAN_HIT_PROBABILITY = {
     ]
 }
 
-AVAIL_HITS = {
-    'Atmosfera': [
-        (TXT['scanner']['hits']['atmosphere']['corrosive'], Color.RED,         0.1, 0.1, 1.0, 0.4, 1.0), # 0
-        (TXT['scanner']['hits']['atmosphere']['none'], Color.RED,              0.1, 0.1, 1.0, 0.4, 1.0), # 1
-        (TXT['scanner']['hits']['atmosphere']['rare'], Color.YELLOW,           0.9, 0.9, 1.0, 0.7, 1.0), # 2
-        (TXT['scanner']['hits']['atmosphere']['semi_rare'], Color.LIGHT_GREEN, 1.0, 1.0, 1.0, 0.9, 1.0), # 3
-        (TXT['scanner']['hits']['atmosphere']['good'], Color.GREEN,            1.2, 1.2, 1.0, 1.0, 1.0), # 4
-        (TXT['scanner']['hits']['atmosphere']['unbreathable'], Color.RED,      0.8, 0.1, 1.0, 0.4, 1.0)  # 5
-    ],
-    'Temperatura': [
-        (TXT['scanner']['hits']['temperature']['very_low'], Color.RED,         0.3, 0.9, 1.0, 0.1, 1.0), # 0
-        (TXT['scanner']['hits']['temperature']['low'], Color.YELLOW,           0.5, 1.0, 1.0, 0.7, 1.0), # 1
-        (TXT['scanner']['hits']['temperature']['good'], Color.GREEN,           1.2, 1.2, 1.0, 1.0, 1.0), # 2
-        (TXT['scanner']['hits']['temperature']['high'], Color.YELLOW,          1.0, 1.0, 1.0, 0.7, 1.0), # 3
-        (TXT['scanner']['hits']['temperature']['ver_high'], Color.RED,         0.3, 0.3, 1.0, 0.4, 1.0)  # 4
-    ],
-    'Água': [
-        (TXT['scanner']['hits']['water']['none'], Color.RED,                   0.1, 0.1, 0.7, 0.3, 1.0), # 0
-        (TXT['scanner']['hits']['water']['trace'], Color.RED,                  0.7, 0.4, 1.0, 0.6, 1.0), # 1
-        (TXT['scanner']['hits']['water']['scarce'], Color.YELLOW,              1.0, 0.9, 1.0, 0.7, 1.0), # 2
-        (TXT['scanner']['hits']['water']['good'], Color.GREEN,                 1.1, 1.1, 1.0, 1.0, 1.0), # 3
-        (TXT['scanner']['hits']['water']['planet_wide_ocean'], Color.YELLOW,   1.0, 1.0, 0.1, 0.4, 1.0)  # 4
-    ],
-    'Gravidade': [
-        (TXT['scanner']['hits']['gravity']['very_low'], Color.RED,             0.1, 0.1, 0.7, 0.3, 0.0), # 0
-        (TXT['scanner']['hits']['gravity']['low'], Color.YELLOW,               0.8, 0.8, 1.0, 0.9, 0.3), # 1
-        (TXT['scanner']['hits']['gravity']['good'], Color.GREEN,               1.1, 1.1, 1.0, 1.0, 0.7), # 2
-        (TXT['scanner']['hits']['gravity']['high'], Color.YELLOW,              0.8, 0.8, 1.0, 0.9, 1.1), # 3
-        (TXT['scanner']['hits']['gravity']['very_high'], Color.RED,            0.5, 0.2, 0.7, 0.3, 1.3)  # 4
-    ],
-    'Recursos': [
-        (TXT['scanner']['hits']['resources']['none'], Color.RED,                   1.0, 0.6, 0.7, 0.0, 1.0), # 0
-        (TXT['scanner']['hits']['resources']['scarce'], Color.YELLOW,              1.0, 0.9, 1.0, 0.3, 1.0), # 1
-        (TXT['scanner']['hits']['resources']['lightly_scarce'], Color.LIGHT_GREEN, 1.0, 1.0, 1.0, 0.6, 1.0), # 2
-        (TXT['scanner']['hits']['resources']['good'], Color.GREEN,                 1.0, 1.0, 1.0, 1.0, 1.0)  # 3
-    ]
-}
+
+@staticmethod
+def __translate(scanner_type: str, quality: str) -> str:
+    return TXT['scanner']['hits'][scanner_type][quality]
+
+
+class AvailableHits:
+    class Atmosphere:
+        class Corrosive:
+            text = __translate('atmosphere', 'corrosive')
+            color = Color.RED,
+            feature_multiplier = {
+                'plants': 0.1,
+                'animals': 0.1,
+                'terrain': 1.0,
+                'monuments': 0.4,
+                'satellites': 1.0
+            }
+            probability = [10, 5, 0]  # 0, 1, 2
+
+        class NoAtmosphere:
+            text = __translate('atmosphere', 'none')
+            color = Color.RED,
+            feature_multiplier = {
+                'plants': 0.1,
+                'animals': 0.1,
+                'terrain': 1.0,
+                'monuments': 0.4,
+                'satellites': 1.0
+            }
+            probability = [20, 10, 0]  # 0, 1, 2
+
+        class Rare:
+            text = __translate('atmosphere', 'rare')
+            color = Color.YELLOW,
+            feature_multiplier = {
+                'plants': 0.9,
+                'animals': 0.9,
+                'terrain': 1.0,
+                'monuments': 0.7,
+                'satellites': 1.0
+            }
+            probability = [20, 10, 5]  # 0, 1, 2
+
+        class SemiRare:
+            text = __translate('atmosphere', 'semi_rare')
+            color = Color.LIGHT_GREEN,
+            feature_multiplier = {
+                'plants': 1.0,
+                'animals': 1.0,
+                'terrain': 1.0,
+                'monuments': 0.9,
+                'satellites': 1.0
+            }
+            probability = [15, 25, 30]  # 0, 1, 2
+
+        class Good:
+            text = __translate('atmosphere', 'semi_rare')
+            color = Color.GREEN,
+            feature_multiplier = {
+                'plants': 1.2,
+                'animals': 1.2,
+                'terrain': 1.0,
+                'monuments': 1.0,
+                'satellites': 1.0
+            }
+            probability = [20, 40, 60]  # 0, 1, 2
+
+        class Unbreathable:
+            text = __translate('atmosphere', 'unbreathable')
+            color = Color.RED,
+            feature_multiplier = {
+                'plants': 0.8,
+                'animals': 0.1,
+                'terrain': 1.0,
+                'monuments': 0.4,
+                'satellites': 1.0
+            }
+            probability = [15, 10, 5]  # 0, 1, 2
+
+        all_possible = [Corrosive,
+                        NoAtmosphere,
+                        Rare,
+                        SemiRare,
+                        Good,
+                        Unbreathable]
+
+    class Temperature:
+        class VeryLow:
+            text = __translate('temperature', 'very_low')
+            color = Color.RED,
+            feature_multiplier = {
+                'plants': 0.3,
+                'animals': 0.9,
+                'terrain': 1.0,
+                'monuments': 0.1,
+                'satellites': 1.0
+            }
+            probability = [20, 5, 0]  # 0, 1, 2
+
+        class Low:
+            text = __translate('temperature', 'low')
+            color = Color.YELLOW,
+            feature_multiplier = {
+                'plants': 0.5,
+                'animals': 1.0,
+                'terrain': 1.0,
+                'monuments': 0.7,
+                'satellites': 1.0
+            }
+            probability = [20, 20, 15]  # 0, 1, 2
+
+        class Good:
+            text = __translate('temperature', 'good')
+            color = Color.GREEN,
+            feature_multiplier = {
+                'plants': 1.2,
+                'animals': 1.2,
+                'terrain': 1.0,
+                'monuments': 1.0,
+                'satellites': 1.0
+            }
+            probability = [20, 45, 70]  # 0, 1, 2
+
+        class High:
+            text = __translate('temperature', 'high')
+            color = Color.YELLOW,
+            feature_multiplier = {
+                'plants': 1.0,
+                'animals': 1.0,
+                'terrain': 1.0,
+                'monuments': 0.7,
+                'satellites': 1.0
+            }
+            probability = [20, 20, 15]  # 0, 1, 2
+
+        class VeryHigh:
+            text = __translate('temperature', 'very_high')
+            color = Color.RED,
+            feature_multiplier = {
+                'plants': 1.0,
+                'animals': 1.0,
+                'terrain': 1.0,
+                'monuments': 0.4,
+                'satellites': 1.0
+            }
+            probability = [20, 10, 0]  # 0, 1, 2
+
+        all_possible = [VeryLow, Low, Good, High, VeryHigh]
+
+    class Water:
+        class NoWater:
+            text = __translate('water', 'none')
+            color = Color.RED
+            feature_multiplier = {
+                'plants': 0.1,
+                'animals': 0.1,
+                'terrain': 0.7,
+                'monuments': 0.3,
+                'satellites': 1.0
+            }
+            probability = [20, 5, 0]  # 0, 1, 2
+
+        class Trace:
+            text = __translate('water', 'trace')
+            color = Color.RED
+            feature_multiplier = {
+                'plants': 0.6,
+                'animals': 0.4,
+                'terrain': 1.0,
+                'monuments': 0.6,
+                'satellites': 1.0
+            }
+            probability = [20, 15, 5]  # 0, 1, 2
+
+        class Scarce:
+            text = __translate('water', 'scarce')
+            color = Color.YELLOW
+            feature_multiplier = {
+                'plants': 1.0,
+                'animals': 0.9,
+                'terrain': 1.0,
+                'monuments': 0.7,
+                'satellites': 1.0
+            }
+            probability = [20, 20, 10]  # 0, 1, 2
+
+        class Good:
+            text = __translate('water', 'good')
+            color = Color.GREEN
+            feature_multiplier = {
+                'plants': 1.1,
+                'animals': 1.1,
+                'terrain': 1.0,
+                'monuments': 1.0,
+                'satellites': 1.0
+            }
+            probability = [20, 45, 75]  # 0, 1, 2
+
+        class PlanetWideOcean:
+            text = __translate('water', 'planet_wide_ocean')
+            color = Color.YELLOW
+            feature_multiplier = {
+                'plants': 1.0,
+                'animals': 0.9,
+                'terrain': 0.1,
+                'monuments': 0.4,
+                'satellites': 1.0
+            }
+            probability = [20, 15, 15]  # 0, 1, 2
+
+        all_possible = [NoWater, Trace, Scarce, Good, PlanetWideOcean]
+
+    class Gravity:
+        class VeryLow:
+            text = __translate('gravity', 'very_low')
+            color = Color.RED
+            feature_multiplier = {
+                'plants': 0.1,
+                'animals': 0.1,
+                'terrain': 0.7,
+                'monuments': 0.3,
+                'satellites': 0.0
+            }
+            probability = [20, 15, 15]  # 0, 1, 2
+
+        class Low:
+            text = __translate('gravity', 'low')
+            color = Color.YELLOW
+            feature_multiplier = {
+                'plants': 0.8,
+                'animals': 0.8,
+                'terrain': 1.0,
+                'monuments': 0.9,
+                'satellites': 0.3
+            }
+            probability = [20, 15, 15]  # 0, 1, 2
+
+        class Good:
+            text = __translate('gravity', 'good')
+            color = Color.GREEN
+            feature_multiplier = {
+                'plants': 1.1,
+                'animals': 1.1,
+                'terrain': 1.0,
+                'monuments': 1.0,
+                'satellites': 0.7
+            }
+            probability = [20, 15, 15]  # 0, 1, 2
+
+        class High:
+            text = __translate('gravity', 'high')
+            color = Color.YELLOW
+            feature_multiplier = {
+                'plants': 0.8,
+                'animals': 0.8,
+                'terrain': 1.0,
+                'monuments': 0.9,
+                'satellites': 1.1
+            }
+            probability = [20, 15, 15]  # 0, 1, 2
+
+        class VeryHigh:
+            text = __translate('gravity', 'very_high')
+            color = Color.RED
+            feature_multiplier = {
+                'plants': 0.5,
+                'animals': 0.2,
+                'terrain': 0.7,
+                'monuments': 0.3,
+                'satellites': 1.4
+            }
+            probability = [20, 15, 15]  # 0, 1, 2
+
+        all_possible = [VeryLow, Low, Good, High, VeryHigh]
+
+    class Resources:
+        class NoResource:
+            text = __translate('resources', 'none')
+            color = Color.RED
+            feature_multiplier = {
+                'plants': 1.0,
+                'animals': 0.9,
+                'terrain': 0.1,
+                'monuments': 0.4,
+                'satellites': 1.0
+            }
+            probability = [20, 15, 15]  # 0, 1, 2
+
+        class Scarce:
+            text = __translate('resources', 'scarce')
+            color = Color.YELLOW
+            feature_multiplier = {
+                'plants': 1.0,
+                'animals': 0.9,
+                'terrain': 1.0,
+                'monuments': 0.3,
+                'satellites': 1.0
+            }
+            probability = [20, 15, 15]  # 0, 1, 2
+
+        class LightlyScarce:
+            text = __translate('resources', 'lightly_scarce')
+            color = Color.LIGHT_GREEN
+            feature_multiplier = {
+                'plants': 1.0,
+                'animals': 0.9,
+                'terrain': 0.1,
+                'monuments': 0.4,
+                'satellites': 1.0
+            }
+            probability = [20, 15, 15]  # 0, 1, 2
+
+        class Good:
+            text = __translate('resources', 'good')
+            color = Color.GREEN
+            feature_multiplier = {
+                'plants': 1.0,
+                'animals': 1.0,
+                'terrain': 1.0,
+                'monuments': 1.0,
+                'satellites': 1.0
+            }
+            probability = [20, 15, 15]  # 0, 1, 2
+
+        all_possible = [NoResource, Scarce, LightlyScarce, Good]
+
+    all_hits = [Atmosphere, Temperature]
 
 SCAN_FAILURE = Color.RED + TXT['scanner']['scan_failed'] + Color.RESET
 
-PROBE_FEATURES = [
-    {
+PROBE_FEATURES = {
+    'plants': {
         ('Plantas unicelulares', Color.YELLOW),
         ('Plantas venenosas', Color.RED),
         ('Plantas comestíveis', Color.GREEN)
     },
-    {
+    'animals': {
         ('Vida animal unicelular', Color.YELLOW),
         ('Vida animal perigosa', Color.RED),
         ('Vida animal domesticável', Color.GREEN)
     },
-    {
+    'terrain': {
         ('Terreno perigoso', Color.RED),
         ('Paisagem bonita', Color.GREEN),
         ('Cavernas habitáveis', Color.GREEN)
     },
-    {
+    'monuments': {
         ('Monumentos abandonados', Color.LIGHT_GREEN),
         ('Materiais/minérios desconhecidos', Color.GREEN)
     },
-    {
+    'satellites': {
         ('Satélite rico em minérios', Color.GREEN),
         ('Satélite com minérios', Color.LIGHT_GREEN)
     }
-]
+}
 
 PROBE_HIT_CHANCE = [0.25, 0.25, 0.25, 0.25, 0.25]
 
