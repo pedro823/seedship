@@ -1,27 +1,28 @@
 from language import LANG_DICT
 import random as r
-import settings
+from features import AvailableFeatures
+from landscape import AvailableLandscape
 
 
-def __translate(attribute: str) -> str:
+def translate(attribute: str) -> str:
     ''' Does one-time translation of every planet feature. '''
     return LANG_DICT['scanner']['categories'].get(attribute, attribute)
 
 
 class Planet:
 
-    ATTRIBUTES = dict((attribute, __translate(attribute))
+    ATTRIBUTES = dict((attribute, translate(attribute))
                       for attribute in ['atmosphere',
                                         'gravity',
                                         'temperature',
                                         'water',
                                         'resources'])
 
-    ATMOSPHERE_POSSIBILITIES = settings.AvailableFeatures.Atmosphere.all_possible
-    TEMPERATURE_POSSIBILITIES = settings.AvailableFeatures.Temperature.all_possible
-    GRAVITY_POSSIBILITIES = settings.AvailableFeatures.Gravity.all_possible
-    WATER_POSSIBILITIES = settings.AvailableFeatures.Water.all_possible
-    RESOURCES_POSSIBILITIES = settings.AvailableFeatures.Resources.all_possible
+    ATMOSPHERE_POSSIBILITIES = AvailableFeatures.Atmosphere.all_possible
+    TEMPERATURE_POSSIBILITIES = AvailableFeatures.Temperature.all_possible
+    GRAVITY_POSSIBILITIES = AvailableFeatures.Gravity.all_possible
+    WATER_POSSIBILITIES = AvailableFeatures.Water.all_possible
+    RESOURCES_POSSIBILITIES = AvailableFeatures.Resources.all_possible
 
     possibility_map = {
         'atmosphere': ATMOSPHERE_POSSIBILITIES,
@@ -29,6 +30,14 @@ class Planet:
         'gravity': GRAVITY_POSSIBILITIES,
         'water': WATER_POSSIBILITIES,
         'resources': RESOURCES_POSSIBILITIES
+    }
+
+    landscape_map = {
+        'plants': AvailableLandscape.Plants.all_possible,
+        'animals': AvailableLandscape.Animals.all_possible,
+        'terrain': AvailableLandscape.Terrain.all_possible,
+        'monuments': AvailableLandscape.Monuments.all_possible,
+        'satellites': AvailableLandscape.Satellites.all_possible
     }
 
     @classmethod
@@ -63,4 +72,22 @@ class Planet:
         self.landscape = self.generate_landscape()
 
     def generate_landscape(self):
-        
+        multipliers = {
+            'plants': 0.25,
+            'animals': 0.25,
+            'terrain': 0.25,
+            'monuments': 0.25,
+            'satellites': 0.25
+        }
+        landscapes = []
+        for feature in [self.atmosphere,
+                        self.gravity,
+                        self.temperature,
+                        self.water,
+                        self.resources]:
+            for name in multipliers:
+                multipliers[name] *= feature.feature_multiplier[name]
+        for name, treshold in multipliers.items():
+            if r.random() < treshold:
+                landscapes.append(r.choice(self.landscape_map[name]))
+        return landscapes

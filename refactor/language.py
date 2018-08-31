@@ -13,7 +13,7 @@ class LanguageError(Exception):
 
 def load_language(language: str) -> dict:
     try:
-        with open('langs/' + language, 'r') as f:
+        with open(f'lang/{language}.json', 'r') as f:
             lang_dict = json.load(f)
         return lang_dict
     except FileNotFoundError:

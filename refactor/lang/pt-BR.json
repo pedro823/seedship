@@ -34,7 +34,7 @@
         "very_low": "Muito Baixa",
         "low": "Baixa",
         "good": "Boa",
-        "High": "Alta",
+        "high": "Alta",
         "very_high": "Muito Alta"
       },
       "resources": {
@@ -71,11 +71,19 @@
       "resourceful": "Satélite com minérios"
     }
   },
-  "seedship_modules": {
+  "seedship_module": {
     "atmosphere_scanner": "Atmosfera",
     "water_scanner": "Água",
     "resources_scanner": "Recursos",
     "gravity_scanner": "Gravidade",
     "temperature_scanner": "Temperatura"
+  },
+  "command": {
+    "damage": "damage",
+    "status": "status",
+    "upgrade": "upgrade",
+    "help": "help",
+    "probe": "probe",
+    "sleep": "sleep"
   }
 }

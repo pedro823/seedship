@@ -50,6 +50,15 @@ class ScanResult:
 
     SCAN_FAILURE = settings.SCAN_FAILURE
 
+    @classmethod
+    def from_probe(cls, planet):
+        return ScanResult(atmosphere=planet.atmosphere,
+                          gravity=planet.gravity,
+                          temperature=planet.temperature,
+                          water=planet.water,
+                          resources=planet.resources,
+                          landscape=planet.landscape,
+                          from_probe=True)
 
     def __init__(self,
                  atmosphere,
@@ -57,12 +66,14 @@ class ScanResult:
                  temperature,
                  water,
                  resources,
+                 landscape=None,
                  from_probe=False):
         self.atmosphere = atmosphere
         self.gravity = gravity
         self.temperature = temperature
         self.water = water
         self.resources = resources
+        self.landscape = landscape
         self.from_probe = from_probe
 
 
@@ -84,14 +95,14 @@ class Seedship:
         cultural_database = Database('cultural_database')
         scientific_database = Database('scientific_database')
         self.databases = {
-            cultural_database,
-            scientific_database
+            'cultural': cultural_database,
+            'scientific': scientific_database
         }
         landing_system = System('landing_system')
         construction_system = System('construction_system')
         self.systems = {
-            landing_system,
-            construction_system
+            'landing': landing_system,
+            'construction': construction_system
         }
         self.planet = None
         self.scan_result = None
@@ -100,17 +111,26 @@ class Seedship:
     def scan_planet(self) -> ScanResult:
         if self.scan_result is not None:
             return self.scan_result
-
         if self.planet is None:
             raise Exception('Cannot scan None')
+        scan_results = {}
+        for name, scanner in self.scanners.items():
+            scan_results[name] = getattr(self.planet, name) \
+                                    if scanner.scan_hits() \
+                                    else ScanResult.SCAN_FAILURE
+        self.scan_result = ScanResult(**scan_results)
+        return self.scan_result
 
     def probe_planet(self) -> ScanResult:
         if self.scan_result is not None and self.scan_result.from_probe:
             return self.scan_result
         if self.probes_left <= 0:
             raise Exception('No probes left')
+        if self.planet is None:
+            raise Exception('Cannot scan None')
         self.probes_left -= 1
-        # TODO
+        self.scan_result = ScanResult.from_probe(self.planet)
+        return self.scan_result
 
     def move_on(self):
         self.planet = None
@@ -119,3 +139,16 @@ class Seedship:
     def find_new_planet(self):
         self.planet = Planet.from_scanners(self.scanners)
         self.scan_result = None
+
+
+if __name__ == '__main__':
+    sdshp = Seedship()
+    for scanner in sdshp.scanners.values():
+        for _ in range(2):
+            scanner.upgrade()
+    sdshp.find_new_planet()
+    print(sdshp.planet.atmosphere)
+    print(sdshp.planet.temperature)
+    print(sdshp.planet.gravity)
+    print(sdshp.planet.water)
+    print(sdshp.planet.resources)
