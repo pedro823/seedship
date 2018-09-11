@@ -142,6 +142,23 @@ class Seedship:
         self.planet = Planet.from_scanners(self.scanners)
         self.scan_result = None
 
+    def to_dict(self) -> dict:
+        ''' returns a representation of the seedship into a dictionary '''
+        return {
+            'scanners': dict(
+                    (name, {'health': scanner.health, 'upgrade_level': scanner.upgrade_level})
+                    for name, scanner in self.scanners.items()
+            ),
+            'databases': dict(
+                (name, database.health)
+                for name, database in self.databases.items()
+            ),
+            'systems': dict(
+                (name, system.health)
+                for name, system in self.systems.items()
+            )
+        }
+
 
 if __name__ == '__main__':
     sdshp = Seedship()

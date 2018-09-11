@@ -28,10 +28,11 @@ class Logger:
     def log_damage(cls, seedship: Seedship, damage: dict):
         ''' Logs damage taken '''
         with open(cls.log_file, mode='a') as f:
-            f.write(f'seedship_took_damage {json.dumps(damage)}')
+            f.write(f'seedship_took_damage {json.dumps(damage)} {json.dumps(seedship.to_dict())}\n')
 
 
 if __name__ == '__main__':
     s = Seedship()
     s.find_new_planet()
     Logger.log_planet(s.planet)
+    Logger.log_damage(s, {})
