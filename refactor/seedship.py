@@ -1,6 +1,7 @@
 from language import LANG_DICT
 import random as r
-import settings
+from util import Color
+from language import TXT
 from planet import Planet
 
 
@@ -20,6 +21,7 @@ class SeedshipModule:
 
 class Scanner(SeedshipModule):
     ''' Represents a scanner of the seedship. '''
+    name = SeedshipModule.resolve_module_name('scanner')
 
     def __init__(self, name: str):
         super().__init__(name)
@@ -32,23 +34,25 @@ class Scanner(SeedshipModule):
 
     def scan_hits(self) -> bool:
         ''' Scan hits the target? '''
-        return r.randint(1, 100) < self.health
+        return r.randint(1, 100) <= self.health
 
 
 class System(SeedshipModule):
     ''' Represent a landing/construction system inside the seedship. '''
-    pass
+    name = SeedshipModule.resolve_module_name('system')
 
 
 class Database(SeedshipModule):
     ''' Represents a seedship's database '''
-    pass
+    name = SeedshipModule.resolve_module_name('database')
 
 
 class ScanResult:
     ''' Represents a scan result of a probe or from seedship '''
 
-    SCAN_FAILURE = settings.SCAN_FAILURE
+    class ScanFailure:
+        text = TXT['scanner']['scan_failed']
+        color = Color.RED
 
     @classmethod
     def from_probe(cls, planet):
@@ -68,11 +72,13 @@ class ScanResult:
                  resources,
                  landscape=None,
                  from_probe=False):
-        self.atmosphere = atmosphere
-        self.gravity = gravity
-        self.temperature = temperature
-        self.water = water
-        self.resources = resources
+        self.features = {
+            'atmosphere': atmosphere,
+            'gravity': gravity,
+            'temperature': temperature,
+            'water': water,
+            'resources': resources
+        }
         self.landscape = landscape
         self.from_probe = from_probe
 
@@ -104,6 +110,7 @@ class Seedship:
             'landing': landing_system,
             'construction': construction_system
         }
+        self.modules = [self.scanners, self.databases, self.systems]
         self.planet = None
         self.scan_result = None
         self.probes_left = 10
@@ -117,7 +124,7 @@ class Seedship:
         for name, scanner in self.scanners.items():
             scan_results[name] = getattr(self.planet, name) \
                                     if scanner.scan_hits() \
-                                    else ScanResult.SCAN_FAILURE
+                                    else ScanResult.ScanFailure
         self.scan_result = ScanResult(**scan_results)
         return self.scan_result
 
@@ -131,10 +138,6 @@ class Seedship:
         self.probes_left -= 1
         self.scan_result = ScanResult.from_probe(self.planet)
         return self.scan_result
-
-    def move_on(self):
-        self.planet = None
-        self.scan_result = None
 
     def find_new_planet(self):
         self.planet = Planet.from_scanners(self.scanners)

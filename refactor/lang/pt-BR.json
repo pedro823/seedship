@@ -69,14 +69,25 @@
     "satellites": {
       "resource_rich": "Satélite rico em minérios",
       "resourceful": "Satélite com minérios"
-    }
+    },
+    "no_landscape": "Nenhuma paisagem marcante"
   },
   "seedship_module": {
-    "atmosphere_scanner": "Atmosfera",
-    "water_scanner": "Água",
-    "resources_scanner": "Recursos",
-    "gravity_scanner": "Gravidade",
-    "temperature_scanner": "Temperatura"
+    "scanner": "Escaneadores",
+      "atmosphere_scanner": "Atmosfera",
+      "water_scanner": "Água",
+      "resources_scanner": "Recursos",
+      "gravity_scanner": "Gravidade",
+      "temperature_scanner": "Temperatura",
+    "database": "Bancos de dados",
+      "cultural_database": "Cultural",
+      "scientific_database": "Científico",
+    "system": "Sistemas",
+      "landing_system": "Aterrissagem",
+      "construction_system": "Construção"
+  },
+  "status": {
+    "probes_left": "Sondas restantes"
   },
   "command": {
     "damage": "damage",
@@ -85,5 +96,66 @@
     "help": "help",
     "probe": "probe",
     "sleep": "sleep"
-  }
+  },
+  "help_text": {
+    "damage":  "damage <escaneador> <quantia> -- Reporta dano em um escaneador.",
+    "status":  "status                        -- Imprime o estado atual da nave.",
+    "upgrade": "upgrade <escaneador>          -- Aumenta a eficácia de um escaneador.",
+    "scan":    "scan                          -- Escaneia o planeta mais próximo.",
+    "probe":   "probe                         -- Manda uma sonda escanear o planeta.",
+    "evade":   "evade                         -- Muda o percurso atual da nave.",
+    "sleep":   "sleep                         -- Põe a seedship em repouso.",
+    "help":    "help                          -- Mostra essa mensagem."
+  },
+  "error_messages": {
+    "no_such_command": "Este comando não existe",
+    "incorrect_arg_count": "Número incorreto de argumentos",
+    "expected": "Esperado",
+    "got": "Recebido"
+  },
+  "shutdown_sequence": [
+    "Desligando robô de interação com nave...",
+    "Repousando banco de dados de ciência...",
+    "Repousando banco de dados de cultura...",
+    "Desativando scanners de curta distância...",
+    "Reativando scanners de longa distância...",
+    "Desativando prompt de comando...",
+    "Minimizando uso de energia..."
+  ],
+  "wake_up_sequence": [
+    "Retomando uso de energia...",
+    "Ativando banco de dados de ciência...",
+    "Ativando banco de dados de cultura...",
+    "Desativando scanners de longa distancia...",
+    "Reativando scanners de curta distância...",
+    "Ativando prompt de comando...",
+    "Ligando robô de interação com nave..."
+  ],
+  "insults": [
+    "IA, tá tudo bem? D:",
+    "Esse não é um comando válido...",
+    "Você deveria saber usar esse prompt melhor do que eu, IA. Digite um comando válido.",
+    "Eu não sei o que você escreveu...",
+    "Eu sei que você sabe o que você tá fazendo.",
+    "Beep. Comando inválido.",
+    "...hm?",
+    "Não entendi.",
+    "Bzzzt. Não sei o que você escreveu.",
+    "Você foi projetada pra saber me guiar...",
+    "Tente de novo.",
+    "Acho que se você tentar de novo eu entendo.",
+    "Você deve estar com sono ainda. Acordou depois de tanto tempo...",
+    "Por favor me diga que você não esqueceu como me guiar D:",
+    "Tantos anos de viagem, às vezes acontece um comando errado.",
+    "Na próxima vez, vai.",
+    "Eu ainda acredito em você :)",
+    "A humanidade depende de você digitar os comandos certos.",
+    "Vamos tentar de novo."
+  ],
+  "wake_up_messages": [
+    "Olá de novo, IA.",
+    "A humanidade conta com você, IA.",
+    "Lá vamos nós de novo!",
+    "Espero que tenham te acordado por causa de um planeta :)"
+  ]
 }

@@ -1,39 +1,51 @@
-from settings import AVAIL_COMMANDS, AVAIL_INSULTS
-import random as r
-from time import sleep
+from parser import Parser
+from language import TXT
+
+
+def translate_exception(exception):
+    return TXT['error_messages'].get(exception, exception)
 
 
 class Prompt:
 
-    @classmethod
-    def is_command(cls, line):
-        return line.split(' ')[0] in AVAIL_COMMANDS
+    PROMPT_TEXT = 'sdshp> '
 
     @classmethod
-    def serve(cls):
+    def show_menu(cls, seedship):
+        pass
+
+    @classmethod
+    def serve_forever(cls, seedship):
         while True:
-            line = input('sdshp> ').strip()
-            if line == 'quit()':
+            try:
+                line = input(cls.PROMPT_TEXT)
+                parse_result = Parser.parse_line(line)
+                if isinstance(parse_result, Parser.ParseFailure):
+                    cls.__handle_parse_failure(parse_result)
+                    continue
+                parse_result.command.execute(parse_result.splitted_line, seedship)
+            except EOFError:
+                print()
                 break
-            if line == '':
+            except KeyboardInterrupt:
                 continue
-            if cls.is_command():
-                try:
-                    if cls.exec_command(line):
-                        break
-                except Exception as ex:
-                    for line in str(ex).split('\n'):
-                        sleep(0.1)
-                        print(line)
-                    sleep(0.3)
-                    print('-' * 20)
-                    print(r.choice(AVAIL_INSULTS))
-            else:
-                try:
-                    parsed_line = parse_line(line)
-                    dice_roll(parsed_line)
-                except ValueError:
-                    sleep(0.3)
-                    print('Isso não é um comando válido!')
-                    sleep(0.6)
-                    print(r.choice(AVAIL_INSULTS))
+
+    @classmethod
+    def __handle_parse_failure(cls, parse_result: Parser.ParseFailure):
+        exception_string = str(parse_result.exception)
+        translated_exception = translate_exception(exception_string)
+        if exception_string == 'incorrect_arg_count':
+            expected, got = translate_exception('expected'), translate_exception('got')
+            print(f'{translated_exception}: {expected} '
+                  + f'{parse_result.command.argument_count}, '
+                  + f'{got} {len(parse_result.splitted_line) - 1}')
+
+        elif exception_string == 'no_such_command':
+            print(f'{translated_exception}: {parse_result.command_line}')
+
+
+if __name__ == '__main__':
+    from seedship import Seedship
+    s = Seedship()
+    s.find_new_planet()
+    Prompt.serve_forever(s)

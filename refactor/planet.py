@@ -71,13 +71,13 @@ class Planet:
         self.resources = resources
         self.landscape = self.generate_landscape()
 
-    def generate_landscape(self):
+    def generate_landscape(self) -> list:
         multipliers = {
-            'plants': 0.25,
-            'animals': 0.25,
-            'terrain': 0.25,
-            'monuments': 0.25,
-            'satellites': 0.25
+            'plants': 0.3,
+            'animals': 0.3,
+            'terrain': 0.3,
+            'monuments': 0.3,
+            'satellites': 0.3
         }
         landscapes = []
         for feature in [self.atmosphere,

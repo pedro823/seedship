@@ -1,8 +1,3 @@
-from util import Color
-from language import TXT
-
-SCAN_FAILURE = Color.RED + TXT['scanner']['scan_failed'] + Color.RESET
-
 
 HELP_TEXT = [
     'damage <scanner> <quantia> -- Reporta dano em um scanner.',

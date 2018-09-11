@@ -10,7 +10,7 @@ class AvailableFeatures:
     class Atmosphere:
         class Corrosive:
             text = translate_feature('atmosphere', 'corrosive')
-            color = Color.RED,
+            color = Color.RED
             feature_multiplier = {
                 'plants': 0.1,
                 'animals': 0.1,
@@ -22,7 +22,7 @@ class AvailableFeatures:
 
         class NoAtmosphere:
             text = translate_feature('atmosphere', 'none')
-            color = Color.RED,
+            color = Color.RED
             feature_multiplier = {
                 'plants': 0.1,
                 'animals': 0.1,
@@ -34,7 +34,7 @@ class AvailableFeatures:
 
         class Rare:
             text = translate_feature('atmosphere', 'rare')
-            color = Color.YELLOW,
+            color = Color.YELLOW
             feature_multiplier = {
                 'plants': 0.9,
                 'animals': 0.9,
@@ -46,7 +46,7 @@ class AvailableFeatures:
 
         class SemiRare:
             text = translate_feature('atmosphere', 'semi_rare')
-            color = Color.LIGHT_GREEN,
+            color = Color.LIGHT_GREEN
             feature_multiplier = {
                 'plants': 1.0,
                 'animals': 1.0,
@@ -58,7 +58,7 @@ class AvailableFeatures:
 
         class Good:
             text = translate_feature('atmosphere', 'semi_rare')
-            color = Color.GREEN,
+            color = Color.GREEN
             feature_multiplier = {
                 'plants': 1.2,
                 'animals': 1.2,
@@ -70,7 +70,7 @@ class AvailableFeatures:
 
         class Unbreathable:
             text = translate_feature('atmosphere', 'unbreathable')
-            color = Color.RED,
+            color = Color.RED
             feature_multiplier = {
                 'plants': 0.8,
                 'animals': 0.1,
@@ -90,7 +90,7 @@ class AvailableFeatures:
     class Temperature:
         class VeryLow:
             text = translate_feature('temperature', 'very_low')
-            color = Color.RED,
+            color = Color.RED
             feature_multiplier = {
                 'plants': 0.3,
                 'animals': 0.9,
@@ -102,7 +102,7 @@ class AvailableFeatures:
 
         class Low:
             text = translate_feature('temperature', 'low')
-            color = Color.YELLOW,
+            color = Color.YELLOW
             feature_multiplier = {
                 'plants': 0.5,
                 'animals': 1.0,
@@ -114,7 +114,7 @@ class AvailableFeatures:
 
         class Good:
             text = translate_feature('temperature', 'good')
-            color = Color.GREEN,
+            color = Color.GREEN
             feature_multiplier = {
                 'plants': 1.2,
                 'animals': 1.2,
@@ -126,7 +126,7 @@ class AvailableFeatures:
 
         class High:
             text = translate_feature('temperature', 'high')
-            color = Color.YELLOW,
+            color = Color.YELLOW
             feature_multiplier = {
                 'plants': 1.0,
                 'animals': 1.0,
@@ -138,7 +138,7 @@ class AvailableFeatures:
 
         class VeryHigh:
             text = translate_feature('temperature', 'very_high')
-            color = Color.RED,
+            color = Color.RED
             feature_multiplier = {
                 'plants': 1.0,
                 'animals': 1.0,
