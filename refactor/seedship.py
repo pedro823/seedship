@@ -1,7 +1,6 @@
-from language import LANG_DICT
+from language import TXT
 import random as r
 from util import Color
-from language import TXT
 from planet import Planet
 
 
@@ -13,7 +12,7 @@ class SeedshipModule:
 
     @classmethod
     def resolve_module_name(cls, name: str) -> str:
-        return LANG_DICT['seedship_module'].get(name, name)
+        return TXT['seedship_module'].get(name, name)
 
     def damage(self, amount: int):
         self.health = max(0, self.health - amount)

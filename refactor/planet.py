@@ -91,3 +91,13 @@ class Planet:
             if r.random() < treshold:
                 landscapes.append(r.choice(self.landscape_map[name]))
         return landscapes
+
+    def to_dict(self) -> dict:
+        ''' Returns the representation of this object in a dict '''
+        return {
+            'atmosphere': self.atmosphere.__name__,
+            'gravity': self.gravity.__name__,
+            'temperature': self.temperature.__name__,
+            'water': self.water.__name__,
+            'resources': self.resources.__name__
+        }
