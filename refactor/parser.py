@@ -51,7 +51,7 @@ class Parser:
     @classmethod
     def __split_line(cls, command_line):
         ''' Splits line into separate words '''
-        # TODO allow this to have quotes
+        # TODO:30 allow this to have quotes
         return [command.strip().lower() for command in command_line.strip().split()]
 
     @classmethod
@@ -59,6 +59,9 @@ class Parser:
         ''' Checks if the correct amount of arguments was given to a command '''
         command = splitted_line[0]
         command_class = AvailableCommands.command_to_class[command]
+        if command_class.argument_count == -1:
+            # variable arglength
+            return True
         return len(splitted_line) - 1 == command_class.argument_count
 
 

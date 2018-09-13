@@ -30,6 +30,11 @@ class Logger:
         with open(cls.log_file, mode='a') as f:
             f.write(f'seedship_took_damage {json.dumps(damage)} {json.dumps(seedship.to_dict())}\n')
 
+    @classmethod
+    def log_probe(cls, probes_left: int):
+        with open(cls.log_file, mode='a') as f:
+            f.write(f'seedship_probed {probes_left}\n')
+
 
 if __name__ == '__main__':
     s = Seedship()

@@ -1,13 +1,18 @@
 from language import TXT
-from util import Color
+from util import Color, SeedshipExecutionError
+from logger import Logger
 import random as r
 from seedship import Scanner
 import os
 import time
 
 
-def translate_command(command):
+def translate_command(command: str) -> str:
     return TXT['command'].get(command, command).lower()
+
+
+def translate_phrase(phrase: str) -> str:
+    return TXT['messages'].get(phrase, phrase)
 
 
 class PlanetRelatedCommand:
@@ -38,7 +43,7 @@ class AvailableCommands:
         argument_count = 2
 
         @staticmethod
-        def execute(splitted_line, seedship):
+        def execute(splitted_line, seedship) -> None:
             module_to_damage = splitted_line[1].lower()
             translated_modules = {}
 
@@ -46,18 +51,23 @@ class AvailableCommands:
                 for module in module_list.values():
                     translated_modules[module.name.lower()] = module
 
+            translated_modules[seedship.colonists.__class__.name.lower()] = seedship.colonists
+
             if module_to_damage not in translated_modules:
-                raise Exception(f'module={splitted_line[1]} doesn\'t exist')
+                raise SeedshipExecutionError('module_doesnt_exist')
 
             amount = int(splitted_line[2])
             translated_modules[module_to_damage].damage(amount)
+            Logger.log_damage(seedship, {'module': module_to_damage, 'amount': amount})
+
+    # TODO:10 command Waste
 
     class Status:
         command = translate_command('status')
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship):
+        def execute(splitted_line, seedship) -> None:
             for module_list in seedship.modules:
                 has_printed_module_list_name = False
                 for module in module_list.values():
@@ -83,19 +93,45 @@ class AvailableCommands:
                     print(f'\t{string}')
                     time.sleep(0.2)
             print(f'{TXT["status"]["probes_left"]}: {seedship.probes_left}')
+            time.sleep(0.3)
+            if seedship.colonists < 400:
+                colonists_color = Color.RED
+            elif seedship.colonists < 800:
+                colonists_color = Color.YELLOW
+            elif seedship.colonists < 900:
+                colonists_color = Color.LIGHT_GREEN
+            else:
+                colonists_color = Color.GREEN
+            translated_colonists = seedship.colonists.__class__.name
+            print(f'{translated_colonists}: {colonists_color}{seedship.colonists}{Color.RESET}')
+
+    class Land:
+        command = translate_command('land')
+        argument_count = 0
+
+        @staticmethod
+        def execute(splitted_line, seedship) -> bool:
+            are_you_sure = translate_phrase('are_you_sure')
+            yes = translate_phrase('yes').lower()
+            no = translate_phrase('no')
+            confirmation = input(f'{are_you_sure} ({yes[0]}/{no[0].upper()})').strip().lower()
+            if confirmation != '' and confirmation in yes.lower():
+                # TODO:20 landing sequence
+                return True
+            return False
 
     class Upgrade:
         command = translate_command('upgrade')
         argument_count = 1
 
         @staticmethod
-        def execute(parsed_line, seedship):
+        def execute(splitted_line, seedship) -> None:
             scanners = dict((scanner.name.lower(), scanner)
                             for scanner in seedship.scanners.values())
-            scanner_to_upgrade = parsed_line[1].lower()
+            scanner_to_upgrade = splitted_line[1].lower()
 
             if scanner_to_upgrade not in scanners:
-                raise Exception(f'scanner={scanner_to_upgrade} doesn\'t exist')
+                raise SeedshipExecutionError('scanner_doesnt_exist')
 
             scanners[scanner_to_upgrade].upgrade()
 
@@ -104,7 +140,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(parsed_line, seedship):
+        def execute(splitted_line, seedship) -> None:
             for text in TXT['help_text'].values():
                 print(text)
                 time.sleep(0.2)
@@ -114,7 +150,7 @@ class AvailableCommands:
         argument_count = 0
 
         @classmethod
-        def execute(cls, parse_line, seedship):
+        def execute(cls, splitted_line, seedship) -> None:
             scan_result = seedship.scan_planet()
             cls.print_scan_result(scan_result)
 
@@ -125,8 +161,9 @@ class AvailableCommands:
         NO_LANDSCAPE = TXT['landscape']['no_landscape']
 
         @classmethod
-        def execute(cls, parse_line, seedship):
+        def execute(cls, splitted_line, seedship) -> None:
             scan_result = seedship.probe_planet()
+            Logger.log_probe(seedship.probes_left)
             cls.print_scan_result(scan_result)
             time.sleep(0.25)
             print()
@@ -148,12 +185,15 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(parsed_line, seedship):
+        def execute(splitted_line, seedship) -> None:
             for shutdown_text in TXT['shutdown_sequence']:
                 print(shutdown_text)
                 time.sleep(0.15)
-            input('[PRESS ENTER TO WAKE UP]')
+            enter_to_wake_up = translate_phrase('enter_to_wake_up')
+            input(f'[{enter_to_wake_up.upper()}]')
             seedship.find_new_planet()
+            seedship.deal_trace_damage()
+            Logger.log_planet(seedship.planet)
             for wake_up_sequence in TXT['shutdown_sequence']:
                 print(wake_up_sequence)
                 time.sleep(0.15)
@@ -165,7 +205,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(parsed_line, seedship):
+        def execute(splitted_line, seedship) -> None:
             os.system('cls') if os.name == 'nt' else os.system('clear')
 
     class Idle:
@@ -173,10 +213,55 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(parsed_line, seedship):
+        def execute(splitted_line, seedship) -> None:
             pass
 
-    all = [Damage, Status, Upgrade, Help, Scan, Probe, Sleep, Clear, Idle]
+    class Exit:
+        command = translate_command('exit')
+        argument_count = 0
+
+        @staticmethod
+        def execute(splitted_line, seedship) -> bool:
+            return True
+
+    class Roll:
+        command = translate_command('roll')
+        argument_count = -1
+
+        class RollException(SeedshipExecutionError):
+
+            def __init__(self, message: str, dice: str):
+                super().__init__(message)
+                self.dice = dice
+
+        @classmethod
+        def execute(cls, splitted_line, seedship) -> None:
+            translated_sum = TXT['messages'].get('sum_die', 'Sum of die')
+            for amount, faces in cls.parse_dice(splitted_line):
+                sum_dice = 0
+                print('-' * 10 + f' {amount}d{faces}:')
+                for dice in range(1, amount + 1):
+                    roll = r.randint(1, faces)
+                    print(Color.LIGHT_BLUE
+                          + f'{amount}d{faces}: '
+                          + Color.YELLOW
+                          + f'#{dice}: '
+                          + Color.RESET
+                          + f'{roll}')
+                    sum_dice += roll
+                print(f'{translated_sum}: {sum_dice}')
+            print('-' * 10)
+
+        @classmethod
+        def parse_dice(cls, splitted_line: list) -> list:
+            formatted_line = [dice.split('d') for dice in splitted_line[1:]]
+            for i in formatted_line:
+                try:
+                    yield int(i[0]), int(i[1])
+                except ValueError:
+                    raise cls.RollException(f'invalid_dice', 'd'.join(i))
+
+    all = [Damage, Status, Upgrade, Help, Scan, Probe, Sleep, Clear, Idle, Land, Roll]
     all_commands = [c.command for c in all]
     command_to_class = dict((name, command) for name, command in zip(all_commands, all))
 

@@ -84,7 +84,12 @@
       "scientific_database": "Científico",
     "system": "Sistemas",
       "landing_system": "Aterrissagem",
-      "construction_system": "Construção"
+      "construction_system": "Construção",
+    "colonists": "Colonizadores"
+  },
+  "seedship_misc": {
+    "fuel": "Combustível",
+    "energy": "Energia"
   },
   "status": {
     "probes_left": "Sondas restantes"
@@ -95,7 +100,10 @@
     "upgrade": "upgrade",
     "help": "help",
     "probe": "probe",
-    "sleep": "sleep"
+    "sleep": "sleep",
+    "land": "land",
+    "roll": "roll",
+    "exit": "exit"
   },
   "help_text": {
     "damage":  "damage <escaneador> <quantia> -- Reporta dano em um escaneador.",
@@ -105,11 +113,25 @@
     "probe":   "probe                         -- Manda uma sonda escanear o planeta.",
     "evade":   "evade                         -- Muda o percurso atual da nave.",
     "sleep":   "sleep                         -- Põe a seedship em repouso.",
-    "help":    "help                          -- Mostra essa mensagem."
+    "help":    "help                          -- Mostra essa mensagem.",
+    "land":    "land                          -- Aterrissa a seedship no planeta atual.",
+    "roll":    "roll <[QUANTIA]d[FACES]>      -- Rola dados (ex: roll 2d5 3d10)",
+    "exit":    "exit                          -- sai do programa."
+  },
+  "messages": {
+    "enter_to_wake_up": "aperte enter para acordar",
+    "sum_die": "Soma dos dados",
+    "are_you_sure": "Você tem certeza?",
+    "yes": "Sim",
+    "no": "Não"
   },
   "error_messages": {
     "no_such_command": "Este comando não existe",
+    "try_help": "Tente o comando 'help' para mais ajuda.",
     "incorrect_arg_count": "Número incorreto de argumentos",
+    "module_doesnt_exist": "O módulo não existe",
+    "scanner_doesnt_exist": "O escaneador não existe",
+    "invalid_dice": "Não conheço esse dado",
     "expected": "Esperado",
     "got": "Recebido"
   },

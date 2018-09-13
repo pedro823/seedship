@@ -17,6 +17,18 @@ class SeedshipModule:
     def damage(self, amount: int):
         self.health = max(0, self.health - amount)
 
+    def trace_damage(self, chance: float, max_amount: int):
+        if r.random() < chance:
+            self.health -= r.choice(range(max_amount))
+
+class SeedshipConsumable:
+
+    def __init__(self, name: str, amount: int):
+        self.name = self.resolve_module_name(name)
+        self.amount = amount
+
+    def waste(self, amount: int):
+        self.amount = max(self.amount - amount, 0)
 
 class Scanner(SeedshipModule):
     ''' Represents a scanner of the seedship. '''
@@ -44,6 +56,22 @@ class System(SeedshipModule):
 class Database(SeedshipModule):
     ''' Represents a seedship's database '''
     name = SeedshipModule.resolve_module_name('database')
+
+
+class Colonists:
+    name = SeedshipModule.resolve_module_name('colonists')
+
+    def __init__(self):
+        self.amount = 1000
+
+    def damage(self, amount: int):
+        self.amount = max(0, self.amount - amount)
+
+    def __lt__(self, number: int):
+        return self.amount < number
+
+    def __str__(self):
+        return str(self.amount)
 
 
 class ScanResult:
@@ -113,8 +141,13 @@ class Seedship:
         self.planet = None
         self.scan_result = None
         self.probes_left = 10
+        self.colonists = Colonists()
+        # TODO:0 add fuel
+        self.fuel = 200
+        self.energy = 40
 
     def scan_planet(self) -> ScanResult:
+        ''' Scans a planet with seedship's own scanners '''
         if self.scan_result is not None:
             return self.scan_result
         if self.planet is None:
@@ -128,6 +161,7 @@ class Seedship:
         return self.scan_result
 
     def probe_planet(self) -> ScanResult:
+        ''' Sends a probe to the planet for full scan results '''
         if self.scan_result is not None and self.scan_result.from_probe:
             return self.scan_result
         if self.probes_left <= 0:
@@ -141,6 +175,20 @@ class Seedship:
     def find_new_planet(self):
         self.planet = Planet.from_scanners(self.scanners)
         self.scan_result = None
+
+    def deal_trace_damage(self):
+        ''' Deals trace damage by wear & tear '''
+        for scanner in self.scanners.values():
+            scanner.trace_damage(0.3, 3)
+        for database in self.databases.values():
+            database.trace_damage(0.3, 2)
+        for system in self.systems.values():
+            system.trace_damage(0.3, 2)
+
+    def recharge_trace_energy(self):
+        ''' Recharges trace amount of energy due to solar panels '''
+        if r.random() < 0.4:
+            self.energy = min(self.energy + r.choice(range(3)), 40)
 
     def to_dict(self) -> dict:
         ''' returns a representation of the seedship into a dictionary '''
@@ -156,7 +204,9 @@ class Seedship:
             'systems': dict(
                 (name, system.health)
                 for name, system in self.systems.items()
-            )
+            ),
+            'colonists': self.colonists.amount,
+            'probes': self.probes_left
         }
 
 

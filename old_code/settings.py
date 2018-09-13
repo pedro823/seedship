@@ -1,5 +1,4 @@
 from util import Color
-from language import TXT
 
 SCAN_HIT_PROBABILITY = {
     'Atmosfera': [

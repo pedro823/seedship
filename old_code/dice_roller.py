@@ -1,5 +1,5 @@
 from random import SystemRandom as random
-from settings import Color
+from util import Color
 import os
 r = random()
 
