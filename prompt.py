@@ -66,6 +66,11 @@ class Prompt:
         if isinstance(exception, AvailableCommands.Roll.RollException):
             print(f'{translated_exception}: {exception.dice}')
             return
+        if exception_string == 'invalid_amount':
+            if len(splitted_line) < 2:
+                return
+            print(f'{translated_exception}: {splitted_line[2]}')
+            return
         print(f'{translated_exception}: {splitted_line[1]}')
 
 

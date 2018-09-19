@@ -29,6 +29,8 @@ class SeedshipModule:
         return TXT['seedship_module'].get(name, name)
 
     def damage(self, amount: int):
+        if amount < 0:
+            raise SeedshipExecutionError('invalid_amount')
         self.health = max(0, self.health - amount)
 
     def trace_damage(self, chance: float, max_amount: int):
@@ -37,6 +39,8 @@ class SeedshipModule:
 
 
 class SeedshipConsumable:
+
+    name = TXT['seedship_consumables']['consumable']
 
     def __init__(self, name: str, amount: int):
         self.name = self.resolve_module_name(name)
@@ -57,22 +61,18 @@ class SeedshipConsumable:
         return Color.GREEN
 
     def waste(self, amount: int):
-        try:
-            assert(amount >= 0)
-        except AssertionError:
+        if amount < 0:
             raise SeedshipExecutionError('invalid_amount')
         self.amount = max(self.amount - amount, 0)
 
     def regenerate(self, amount: int):
-        try:
-            assert(amount >= 0)
-        except AssertionError:
+        if amount < 0:
             raise SeedshipExecutionError('invalid_amount')
         self.amount = min(self.amount + amount, self.full_amount)
 
     @classmethod
     def resolve_module_name(cls, name: str) -> str:
-        return TXT['seedship_module'].get(name, name)
+        return TXT['seedship_consumables'].get(name, name)
 
 
 class Scanner(SeedshipModule):
@@ -85,7 +85,7 @@ class Scanner(SeedshipModule):
 
     def upgrade(self):
         if self.upgrade_level >= 2:
-            raise Exception('Upgrade at max level')
+            raise SeedshipExecutionError('upgrade_max_level')
         self.upgrade_level += 1
 
     def scan_hits(self) -> bool:
@@ -101,6 +101,11 @@ class System(SeedshipModule):
 class Database(SeedshipModule):
     ''' Represents a seedship's database '''
     name = SeedshipModule.resolve_module_name('database')
+
+    def regenerate(self, amount):
+        if amount < 0:
+            raise SeedshipExecutionError('invalid_amount')
+        self.health += amount  # can go over full health, intentional.
 
 
 class Colonists:

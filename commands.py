@@ -85,6 +85,31 @@ class AvailableCommands:
             translated_consumables[consumable_to_waste].waste(amount)
             Logger.log_waste(seedship, {'consumable': consumable_to_waste, 'amount': amount})
 
+    class Regenerate:
+        command = translate_command('regenerate')
+        argument_count = 2
+
+        @staticmethod
+        def execute(splitted_line, seedship) -> None:
+            to_be_regenerated = splitted_line[1].lower()
+
+            try:
+                amount = int(splitted_line[2])
+            except ValueError:
+                raise SeedshipExecutionError('invalid_amount')
+
+            # to_be_regenerated should be consumable or a database
+            regenerable = dict((consumable.name.lower(), consumable)
+                               for consumable in seedship.consumables)
+            regenerable.update(dict((database.name.lower(), database)
+                                    for database in seedship.databases.values()))
+
+            print(regenerable)
+            if to_be_regenerated not in regenerable:
+                raise SeedshipExecutionError('not_regenerable')
+
+            regenerable[to_be_regenerated].regenerate(amount)
+
     class Status:
         command = translate_command('status')
         argument_count = 0
@@ -98,7 +123,7 @@ class AvailableCommands:
                     health = module.health
                     str_left = f'{Color.RESET}{module.name.capitalize()}: '
                     str_right = f'{health_color}{health}%{Color.RESET}'
-                    string = str_left.ljust(17) + str_right.ljust(18)
+                    string = str_left.ljust(20) + str_right.ljust(18)
                     if isinstance(module, Scanner):
                         string += f'({module.upgrade_level})'
                     if not has_printed_module_list_name:
@@ -109,8 +134,20 @@ class AvailableCommands:
                     print(f'\t{string}')
                     time.sleep(0.2)
 
-            print(f'{TXT["status"]["probes_left"]}: {seedship.probes_left}')
-            time.sleep(0.3)
+            has_printed_consumable_name = False
+            for consumable in seedship.consumables:
+                amount_color = consumable.get_color()
+                str_left = f'{Color.RESET}{consumable.name.capitalize()}: '
+                str_right = f'{amount_color}{consumable.amount}{Color.RESET}'
+                string = str_left.ljust(20) + str_right.ljust(18)
+                if not has_printed_consumable_name:
+                    time.sleep(0.4)
+                    print(f'{consumable.__class__.name}:')
+                    time.sleep(0.2)
+                    has_printed_consumable_name = True
+                print(f'\t{string}')
+                time.sleep(0.2)
+
             if seedship.colonists < 100:
                 colonists_color = Color.RED + Color.BLINK
             elif seedship.colonists < 400:
@@ -123,6 +160,8 @@ class AvailableCommands:
                 colonists_color = Color.GREEN
             translated_colonists = seedship.colonists.__class__.name
             print(f'{translated_colonists}: {colonists_color}{seedship.colonists}{Color.RESET}')
+            time.sleep(0.3)
+            print(f'{TXT["status"]["probes_left"]}: {seedship.probes_left}')
 
     class Land:
         command = translate_command('land')
@@ -291,7 +330,8 @@ class AvailableCommands:
                 except ValueError:
                     raise cls.RollException(f'invalid_dice', 'd'.join(i))
 
-    all = [Damage, Status, Upgrade, Help, Scan, Probe, Sleep, Clear, Waste, Idle, Land, Roll]
+    all = [Damage, Status, Upgrade, Help, Scan, Regenerate,
+           Probe, Sleep, Clear, Waste, Idle, Land, Roll]
     all_commands = [c.command for c in all]
     command_to_class = dict((name, command) for name, command in zip(all_commands, all))
 

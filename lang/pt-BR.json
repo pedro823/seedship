@@ -87,7 +87,8 @@
       "construction_system": "Construção",
     "colonists": "Colonizadores"
   },
-  "seedship_misc": {
+  "seedship_consumables": {
+    "consumable": "Consumíveis",
     "fuel": "Combustível",
     "energy": "Energia"
   },
@@ -133,6 +134,10 @@
     "module_doesnt_exist": "O módulo não existe",
     "scanner_doesnt_exist": "O escaneador não existe",
     "invalid_dice": "Não conheço esse dado",
+    "upgrade_max_level": "O escaneador está no nível máximo",
+    "consumable_doesnt_exist": "O consumível não existe",
+    "invalid_amount": "Valor inválido",
+    "not_regenerable": "Esse módulo não é regenerável",
     "expected": "Esperado",
     "got": "Recebido"
   },
