@@ -46,7 +46,7 @@ class Parser:
             return cls.ParseSuccess(AvailableCommands.command_to_class[command],
                                     splitted_line)
         except Exception as ex:
-            return cls.ParseFailure(exception=ex)
+            return cls.ParseFailure(exception=ex, splitted_line=splitted_line)
 
     @classmethod
     def __split_line(cls, command_line):

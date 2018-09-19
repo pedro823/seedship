@@ -71,8 +71,8 @@ class AvailableCommands:
         @staticmethod
         def execute(splitted_line, seedship) -> None:
             consumable_to_waste = splitted_line[1].lower()
-            translated_consumables = dict((consumable.name.lower(), consumable)
-                                          for consumable in seedship.consumables)
+            translated_consumables = {consumable.name.lower(): consumable
+                                      for consumable in seedship.consumables}
 
             if consumable_to_waste not in translated_consumables:
                 raise SeedshipExecutionError('consumable_doesnt_exist')
@@ -99,10 +99,10 @@ class AvailableCommands:
                 raise SeedshipExecutionError('invalid_amount')
 
             # to_be_regenerated should be consumable or a database
-            regenerable = dict((consumable.name.lower(), consumable)
-                               for consumable in seedship.consumables)
-            regenerable.update(dict((database.name.lower(), database)
-                                    for database in seedship.databases.values()))
+            regenerable = {consumable.name.lower(): consumable
+                           for consumable in seedship.consumables}
+            regenerable.update({database.name.lower(): database
+                                for database in seedship.databases.values()})
 
             print(regenerable)
             if to_be_regenerated not in regenerable:
@@ -193,8 +193,8 @@ class AvailableCommands:
 
         @staticmethod
         def execute(splitted_line, seedship) -> None:
-            scanners = dict((scanner.name.lower(), scanner)
-                            for scanner in seedship.scanners.values())
+            scanners = {scanner.name.lower(): scanner
+                        for scanner in seedship.scanners.values()}
             scanner_to_upgrade = splitted_line[1].lower()
 
             if scanner_to_upgrade not in scanners:
@@ -333,7 +333,7 @@ class AvailableCommands:
     all = [Damage, Status, Upgrade, Help, Scan, Regenerate,
            Probe, Sleep, Clear, Waste, Idle, Land, Roll]
     all_commands = [c.command for c in all]
-    command_to_class = dict((name, command) for name, command in zip(all_commands, all))
+    command_to_class = dict(zip(all_commands, all))
 
     @classmethod
     def is_command(cls, command):

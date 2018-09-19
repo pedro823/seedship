@@ -243,18 +243,18 @@ class Seedship:
     def to_dict(self) -> dict:
         ''' returns a representation of the seedship into a dictionary '''
         return {
-            'scanners': dict(
-                    (name, {'health': scanner.health, 'upgrade_level': scanner.upgrade_level})
+            'scanners': {
+                    name: {'health': scanner.health, 'upgrade_level': scanner.upgrade_level}
                     for name, scanner in self.scanners.items()
-            ),
-            'databases': dict(
-                (name, database.health)
+            },
+            'databases': {
+                name: database.health
                 for name, database in self.databases.items()
-            ),
-            'systems': dict(
-                (name, system.health)
+            },
+            'systems': {
+                name: system.health
                 for name, system in self.systems.items()
-            ),
+            },
             'colonists': self.colonists.amount,
             'probes': self.probes_left
         }
