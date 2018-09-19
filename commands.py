@@ -172,20 +172,65 @@ class AvailableCommands:
             are_you_sure = translate_phrase('are_you_sure')
             yes = translate_phrase('yes').lower()
             no = translate_phrase('no')
-            confirmation = input(f'{are_you_sure} ({yes[0]}/{no[0].upper()})').strip().lower()
+            confirmation = input(f'{are_you_sure} ({yes[0]}/{no[0].upper()}): ').strip().lower()
             if confirmation != '' and confirmation in yes.lower():
-                cls.__print_landing_sequence()
+                cls.__print_landing_sequence(seedship)
                 return True
             print(translate_phrase('land_confirmation_no'))
             return False
 
-        @staticmethod
-        def __print_landing_sequence():
-            phases = ['space', 'atmosphere', 'glide', 'touchdown']
-            print_queue = []
+        @classmethod
+        def __print_landing_sequence(cls, seedship):
             looking_to_print_list = []
+            landing_sequence_text = TXT['landing_sequence']['landing_system']
+            failure_text = TXT['landing_sequence']['failures']
             time.sleep(2.8)
             # TODO cinematics
+
+            # Space phase
+            looking_to_print_list.append(landing_sequence_text['space_phase'])
+            looking_to_print_list.append(TXT['landing_sequence']['chat'])
+
+            cls.__run_print_list(looking_to_print_list)
+            # Atmosphere phase
+            looking_to_print_list.append(landing_sequence_text['atmosphere_phase'])
+
+            cls.__run_print_list(looking_to_print_list)
+            # Glide phase
+            looking_to_print_list.append(landing_sequence_text['glide_phase'])
+
+            cls.__run_print_list(looking_to_print_list)
+            # touchdown phase
+            looking_to_print_list.append(landing_sequence_text['touchdown_phase'])
+
+            cls.__run_print_list(looking_to_print_list)
+
+        @classmethod
+        def __run_print_list(cls, print_list: list):
+            ''' Takes a list of lists of printables and
+                prints randomically. '''
+            while print_list != []:
+                print_sample = r.choice(print_list)
+                if print_sample == []:
+                    print_list.remove(print_sample)
+                    continue
+                to_print = print_sample.pop(0)
+                cls.__print_landing_message(to_print, 'phase')
+                time.sleep(0.1)
+
+
+        @staticmethod
+        def __print_landing_message(message: str, came_from: str):
+            ''' prints one message from the landing sequence. '''
+            if came_from == 'chat':
+                print(f'{Color.WHITE}>>> {message}{Color.RESET}')
+            elif message.startswith('[!]'):
+                if came_from == 'phase':
+                    print(f'{Color.YELLOW}{message}{Color.RESET}')
+                else:
+                    print(f'{Color.LIGHT_RED}{Color.BLINK}{message}{Color.RESET}')
+            else:
+                print(message)
 
     class Upgrade:
         command = translate_command('upgrade')
