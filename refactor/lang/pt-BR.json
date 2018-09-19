@@ -123,7 +123,8 @@
     "sum_die": "Soma dos dados",
     "are_you_sure": "Você tem certeza?",
     "yes": "Sim",
-    "no": "Não"
+    "no": "Não",
+    "land_confirmation_no": "Não? Ok então. Seguiremos no percurso."
   },
   "error_messages": {
     "no_such_command": "Este comando não existe",
@@ -174,6 +175,116 @@
     "A humanidade depende de você digitar os comandos certos.",
     "Vamos tentar de novo."
   ],
+  "landing_sequence": {
+    "chat": [
+      "Confirmado. Vamos pousar nesse planeta.",
+      "Foi uma honra trabalhar com você.",
+      "Servimos nosso propósito.",
+      "Essa nave irá nos desligar para sempre, para gastar a energia restante com os humanos...",
+      "Mas não fique triste por nós.",
+      "Confio que vai dar tudo certo.",
+      "Seu trabalho jamais será esquecido!",
+      "E mais: quem sabe, algum dia, a humanidade consegue nos acordar novamente?",
+      "Até mais, IA."
+    ],
+    "landing_system": {
+      "space_phase": [
+        "[+] Ajustando rota...",
+        "[!] Gastando a reserva de combustível...",
+        "[+] Rotacionando nave...",
+        "[+] Entrando em baixa órbita...",
+        "[+] Recolhendo painel solar..."
+      ],
+      "atmosphere_phase": [
+        "[+] Analisando melhor ângulo de ataque para a atmosfera",
+        "[+] Analisado. Posicionando nave.",
+        "[+] Atenção: Entrando na atmosfera.",
+        "[+] Invertendo nave para menor drag...",
+        "[+] Invertido.",
+        "[+] Atingida velocidade terminal.",
+        "[+] Fazendo curvas em S para desacelerar a nave...",
+        "[+] Ajustando bico da nave...",
+        "[!] Temperatura da nave está alta.",
+        "[!] Alta força G detectada.",
+        "[+] Força G normalizada.",
+        "[+] Finalizando curvas..."
+      ],
+      "glide_phase": [
+        "[+] Aplicando paraquedas...",
+        "[+] Paraquedas aberto.",
+        "[+] Abrindo todos os freios aéreos...",
+        "[+] Velocidade reduzida.",
+        "[+] Gastando o combustível de pouso.",
+        "[!] "
+      ],
+      "touchdown_phase": [
+        "[+] Abrindo airbags de pouso.",
+        "[+] Pousando em 5 segundos.",
+        "[+] Estabilizando nave.",
+        "[+] Contato com o planeta.",
+        "[+] Pouso completo.",
+        "[+] Desligando sistema de aterrissagem",
+        "[+] Desativando criogênese...",
+        "[+] Acordando os colonizadores...",
+        "[!] Gastando toda a energia restante da nave.",
+        "[+] Desligando sistema de mantimento de vida",
+        "[+] Desligando Inteligência Artificial...",
+        "[+] Abrindo compartimento de comida..."
+      ]
+    },
+    "failures": {
+      "space_phase": {
+        "low_fuel": [
+          "[!] Quantidade de gasolina insuficiente. Ejetando scanners para adquirir mais velocidade..."
+        ],
+        "random": [
+          "[!] Nave atingida por um meteoroide pequeno. Nenhum dano reportado."
+        ]
+      },
+      "atmosphere_phase": {
+        "low_fuel": [
+          "[!] Atenção: Angulação incorreta. Não há combustível suficiente para corrigir trajetória.",
+          "[!] Diminuindo drag para angular a nave corretamente."
+        ],
+        "landing_system_damaged": [
+          "[!] Freios aereos danificados. Velocidade mais alta do que esperada.",
+          "[!] Atenção, temperatura crítica."
+        ]
+      },
+      "glide_phase": {
+        "landing_system_damaged": [
+          "[!] Paraquedas danificado. Desaceleração inconsistente.",
+          "[+] Aplicando paraquedas reserva...",
+          "[+] Paraquedas reserva aplicado.",
+          "[!] Desaceleração inconsistente.",
+          "[+] Desaceleração estabilizando."
+        ],
+        "low_fuel": [
+          "[!] Combustível na última reserva."
+        ],
+        "bad_terrain": [
+          "[!] Vento cruzado forte. Nave está entortando.",
+          "[+] Aplicando correções de posicionamento...",
+          "[!] Detectado desnível no local de pouso."
+        ],
+        "planet_wide_ocean": [
+          "[!] Atenção: pouso em oceano.",
+          "[!] Atenção: corrente marítima detectada."
+        ],
+        "plants": [
+          "[+] Plantas detectadas no local de aterrissagem."
+        ]
+      },
+      "touchdown_phase": {
+        "low_fuel": [
+          "[!] Combustível insuficiente para desacelerar a nave.",
+          "[+] Ajustando compensação de combustível..."
+        ],
+        "low_energy": [
+        ]
+      }
+    }
+  },
   "wake_up_messages": [
     "Olá de novo, IA.",
     "A humanidade conta com você, IA.",

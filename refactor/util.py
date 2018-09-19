@@ -15,6 +15,7 @@ class Color:
     LIGHT_CYAN =   '\033[1;36m'
     LIGHT_GRAY =   '\033[0;37m'
     WHITE =        '\033[1;37m'
+    BLINK =        '\033[5m'
     RESET =        '\033[0m'
 
 

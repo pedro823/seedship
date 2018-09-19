@@ -1,6 +1,6 @@
 from language import TXT
 import random as r
-from util import Color
+from util import Color, SeedshipExecutionError
 from planet import Planet
 
 
@@ -9,6 +9,20 @@ class SeedshipModule:
     def __init__(self, name: str, health: int = 100):
         self.name = self.resolve_module_name(name)
         self.health = health
+        self.full_health = health
+
+    def get_color(self) -> str:
+        ''' Returns a color representing the status of the module '''
+        ratio = self.health / self.full_health
+        if ratio <= 0.1:
+            return Color.RED + Color.BLINK
+        if ratio <= 0.4:
+            return Color.LIGHT_RED
+        if ratio <= 0.7:
+            return Color.YELLOW
+        if ratio <= 0.95:
+            return Color.LIGHT_GREEN
+        return Color.GREEN
 
     @classmethod
     def resolve_module_name(cls, name: str) -> str:
@@ -21,14 +35,45 @@ class SeedshipModule:
         if r.random() < chance:
             self.health -= r.choice(range(max_amount))
 
+
 class SeedshipConsumable:
 
     def __init__(self, name: str, amount: int):
         self.name = self.resolve_module_name(name)
         self.amount = amount
+        self.full_amount = amount
+
+    def get_color(self) -> str:
+        ''' Gets status level color '''
+        ratio = self.amount / self.full_amount
+        if ratio <= 0.1:
+            return Color.RED + Color.BLINK
+        if ratio <= 0.4:
+            return Color.LIGHT_RED
+        if ratio <= 0.7:
+            return Color.YELLOW
+        if ratio <= 0.95:
+            return Color.LIGHT_GREEN
+        return Color.GREEN
 
     def waste(self, amount: int):
+        try:
+            assert(amount >= 0)
+        except AssertionError:
+            raise SeedshipExecutionError('invalid_amount')
         self.amount = max(self.amount - amount, 0)
+
+    def regenerate(self, amount: int):
+        try:
+            assert(amount >= 0)
+        except AssertionError:
+            raise SeedshipExecutionError('invalid_amount')
+        self.amount = min(self.amount + amount, self.full_amount)
+
+    @classmethod
+    def resolve_module_name(cls, name: str) -> str:
+        return TXT['seedship_module'].get(name, name)
+
 
 class Scanner(SeedshipModule):
     ''' Represents a scanner of the seedship. '''
@@ -82,7 +127,7 @@ class ScanResult:
         color = Color.RED
 
     @classmethod
-    def from_probe(cls, planet):
+    def from_probe(cls, planet: Planet):
         return ScanResult(atmosphere=planet.atmosphere,
                           gravity=planet.gravity,
                           temperature=planet.temperature,
@@ -142,9 +187,9 @@ class Seedship:
         self.scan_result = None
         self.probes_left = 10
         self.colonists = Colonists()
-        # TODO:0 add fuel
-        self.fuel = 200
-        self.energy = 40
+        self.fuel = SeedshipConsumable('fuel', 200)
+        self.energy = SeedshipConsumable('energy', 40)
+        self.consumables = [self.fuel, self.energy]
 
     def scan_planet(self) -> ScanResult:
         ''' Scans a planet with seedship's own scanners '''

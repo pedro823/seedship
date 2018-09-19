@@ -35,6 +35,12 @@ class Logger:
         with open(cls.log_file, mode='a') as f:
             f.write(f'seedship_probed {probes_left}\n')
 
+    @classmethod
+    def log_waste(cls, seedship: Seedship, waste: dict):
+        ''' Logs waste of consumable '''
+        with open(cls.log_file, mode='a') as f:
+            f.write(f'seedship_wasted {json.dumps(waste)} {json.dumps(seedship.to_dict())}\n')
+
 
 if __name__ == '__main__':
     s = Seedship()

@@ -56,11 +56,34 @@ class AvailableCommands:
             if module_to_damage not in translated_modules:
                 raise SeedshipExecutionError('module_doesnt_exist')
 
-            amount = int(splitted_line[2])
+            try:
+                amount = int(splitted_line[2])
+            except ValueError:
+                raise SeedshipExecutionError('invalid_amount')
+
             translated_modules[module_to_damage].damage(amount)
             Logger.log_damage(seedship, {'module': module_to_damage, 'amount': amount})
 
-    # TODO:10 command Waste
+    class Waste:
+        command = translate_command('waste')
+        argument_count = 2
+
+        @staticmethod
+        def execute(splitted_line, seedship) -> None:
+            consumable_to_waste = splitted_line[1].lower()
+            translated_consumables = dict((consumable.name.lower(), consumable)
+                                          for consumable in seedship.consumables)
+
+            if consumable_to_waste not in translated_consumables:
+                raise SeedshipExecutionError('consumable_doesnt_exist')
+
+            try:
+                amount = int(splitted_line[2])
+            except ValueError:
+                raise SeedshipExecutionError('invalid_amount')
+
+            translated_consumables[consumable_to_waste].waste(amount)
+            Logger.log_waste(seedship, {'consumable': consumable_to_waste, 'amount': amount})
 
     class Status:
         command = translate_command('status')
@@ -71,17 +94,10 @@ class AvailableCommands:
             for module_list in seedship.modules:
                 has_printed_module_list_name = False
                 for module in module_list.values():
+                    health_color = module.get_color()
                     health = module.health
-                    if health < 40:
-                        status_color = Color.LIGHT_RED
-                    elif health < 70:
-                        status_color = Color.YELLOW
-                    elif health < 95:
-                        status_color = Color.LIGHT_GREEN
-                    else:
-                        status_color = Color.GREEN
                     str_left = f'{Color.RESET}{module.name.capitalize()}: '
-                    str_right = f'{status_color}{health}%{Color.RESET}'
+                    str_right = f'{health_color}{health}%{Color.RESET}'
                     string = str_left.ljust(17) + str_right.ljust(18)
                     if isinstance(module, Scanner):
                         string += f'({module.upgrade_level})'
@@ -92,10 +108,13 @@ class AvailableCommands:
                         has_printed_module_list_name = True
                     print(f'\t{string}')
                     time.sleep(0.2)
+
             print(f'{TXT["status"]["probes_left"]}: {seedship.probes_left}')
             time.sleep(0.3)
-            if seedship.colonists < 400:
-                colonists_color = Color.RED
+            if seedship.colonists < 100:
+                colonists_color = Color.RED + Color.BLINK
+            elif seedship.colonists < 400:
+                colonists_color = Color.LIGHT_RED
             elif seedship.colonists < 800:
                 colonists_color = Color.YELLOW
             elif seedship.colonists < 900:
@@ -109,16 +128,25 @@ class AvailableCommands:
         command = translate_command('land')
         argument_count = 0
 
-        @staticmethod
-        def execute(splitted_line, seedship) -> bool:
+        @classmethod
+        def execute(cls, splitted_line, seedship) -> bool:
             are_you_sure = translate_phrase('are_you_sure')
             yes = translate_phrase('yes').lower()
             no = translate_phrase('no')
             confirmation = input(f'{are_you_sure} ({yes[0]}/{no[0].upper()})').strip().lower()
             if confirmation != '' and confirmation in yes.lower():
-                # TODO:20 landing sequence
+                cls.__print_landing_sequence()
                 return True
+            print(translate_phrase('land_confirmation_no'))
             return False
+
+        @staticmethod
+        def __print_landing_sequence():
+            phases = ['space', 'atmosphere', 'glide', 'touchdown']
+            print_queue = []
+            looking_to_print_list = []
+            time.sleep(2.8)
+            # TODO cinematics
 
     class Upgrade:
         command = translate_command('upgrade')
@@ -241,6 +269,8 @@ class AvailableCommands:
                 sum_dice = 0
                 print('-' * 10 + f' {amount}d{faces}:')
                 for dice in range(1, amount + 1):
+                    if faces < 1:
+                        raise cls.RollException('invalid_dice', f'{amount}d{faces}')
                     roll = r.randint(1, faces)
                     print(Color.LIGHT_BLUE
                           + f'{amount}d{faces}: '
@@ -261,7 +291,7 @@ class AvailableCommands:
                 except ValueError:
                     raise cls.RollException(f'invalid_dice', 'd'.join(i))
 
-    all = [Damage, Status, Upgrade, Help, Scan, Probe, Sleep, Clear, Idle, Land, Roll]
+    all = [Damage, Status, Upgrade, Help, Scan, Probe, Sleep, Clear, Waste, Idle, Land, Roll]
     all_commands = [c.command for c in all]
     command_to_class = dict((name, command) for name, command in zip(all_commands, all))
 
