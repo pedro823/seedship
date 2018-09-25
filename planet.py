@@ -45,15 +45,24 @@ class Planet:
         planet_features = {}
         for scanner_name, scanner in scanners.items():
             planet_features[scanner_name] = cls.generate_feature(
-                scanner,
+                scanner.upgrade_level,
                 cls.possibility_map[scanner_name]
             )
         return Planet(**planet_features)
 
     @classmethod
-    def generate_feature(cls, scanner, possibilities):
+    def from_evasion(cls, scanners: list):
+        planet_features = {}
+        for scanner_name, scanner in scanners.items():
+            planet_features[scanner_name] = cls.generate_feature(
+                0,
+                cls.possibility_map[scanner_name]
+            )
+        return Planet(**planet_features)
+
+    @classmethod
+    def generate_feature(cls, upgrade_level, possibilities):
         ''' Generates a random number and matches it with a planet's feature '''
-        upgrade_level = scanner.upgrade_level
         random_number = r.randint(1, 100)
         current_sum = 0
         for feature in possibilities:

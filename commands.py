@@ -1,6 +1,9 @@
 from language import TXT
 from util import Color, SeedshipExecutionError
 from logger import Logger
+from game_status import GameStatus
+from landscape import AvailableLandscape
+from features import AvailableFeatures
 import random as r
 from seedship import Scanner
 import os
@@ -43,7 +46,7 @@ class AvailableCommands:
         argument_count = 2
 
         @staticmethod
-        def execute(splitted_line, seedship) -> None:
+        def execute(splitted_line, seedship, status: GameStatus) -> None:
             module_to_damage = splitted_line[1].lower()
             translated_modules = {}
 
@@ -69,28 +72,44 @@ class AvailableCommands:
         argument_count = 2
 
         @staticmethod
-        def execute(splitted_line, seedship) -> None:
+        def execute(splitted_line, seedship, status: GameStatus) -> None:
             consumable_to_waste = splitted_line[1].lower()
-            translated_consumables = {consumable.name.lower(): consumable
-                                      for consumable in seedship.consumables}
-
-            if consumable_to_waste not in translated_consumables:
-                raise SeedshipExecutionError('consumable_doesnt_exist')
-
             try:
                 amount = int(splitted_line[2])
             except ValueError:
                 raise SeedshipExecutionError('invalid_amount')
 
-            translated_consumables[consumable_to_waste].waste(amount)
-            Logger.log_waste(seedship, {'consumable': consumable_to_waste, 'amount': amount})
+            translated_consumables = {consumable.name.lower(): consumable
+                                      for consumable in seedship.consumables}
+            # can also waste probes
+            # TODO change probes into a consumable
+            translated_probes = TXT['status']['probes_left'].lower()
+
+            if consumable_to_waste == translated_probes:
+                seedship.probes_left = max(0, seedship.probes_left - amount)
+                Logger.log_waste(seedship, {'consumable': consumable_to_waste, 'amount': amount})
+            elif consumable_to_waste in translated_consumables:
+                translated_consumables[consumable_to_waste].waste(amount)
+                Logger.log_waste(seedship, {'consumable': consumable_to_waste, 'amount': amount})
+            else:
+                raise SeedshipExecutionError('consumable_doesnt_exist')
+
+    class Evade:
+        command = translate_command('evade')
+        argument_count = 0
+
+        @staticmethod
+        def execute(splitted_line, seedship, status: GameStatus) -> None:
+            translated_confirmation = translate_phrase('evade_confirmation')
+            print(translated_confirmation)
+            seedship.evade_colision()
 
     class Regenerate:
         command = translate_command('regenerate')
         argument_count = 2
 
         @staticmethod
-        def execute(splitted_line, seedship) -> None:
+        def execute(splitted_line, seedship, status: GameStatus) -> None:
             to_be_regenerated = splitted_line[1].lower()
 
             try:
@@ -104,7 +123,6 @@ class AvailableCommands:
             regenerable.update({database.name.lower(): database
                                 for database in seedship.databases.values()})
 
-            print(regenerable)
             if to_be_regenerated not in regenerable:
                 raise SeedshipExecutionError('not_regenerable')
 
@@ -115,7 +133,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship) -> None:
+        def execute(splitted_line, seedship, status: GameStatus) -> None:
             for module_list in seedship.modules:
                 has_printed_module_list_name = False
                 for module in module_list.values():
@@ -168,7 +186,7 @@ class AvailableCommands:
         argument_count = 0
 
         @classmethod
-        def execute(cls, splitted_line, seedship) -> bool:
+        def execute(cls, splitted_line, seedship, status: GameStatus) -> bool:
             are_you_sure = translate_phrase('are_you_sure')
             yes = translate_phrase('yes').lower()
             no = translate_phrase('no')
@@ -184,40 +202,71 @@ class AvailableCommands:
             looking_to_print_list = []
             landing_sequence_text = TXT['landing_sequence']['landing_system']
             failure_text = TXT['landing_sequence']['failures']
+            chat = TXT['landing_sequence']['chat']
+
+            is_low_on_fuel = seedship.fuel.get_ratio() < 0.3
+            has_bad_terrain = AvailableLandscape.Terrain.Dangerous in seedship.planet.landscape
+            is_planet_wide_ocean = seedship.planet.water == AvailableFeatures.Water.PlanetWideOcean
             time.sleep(2.8)
             # TODO cinematics
 
+            # Confirmation
+            looking_to_print_list.append(('chat', chat[:1]))
+
+            cls.__run_print_list(looking_to_print_list, 1.0, 1.0)
+
             # Space phase
-            looking_to_print_list.append(landing_sequence_text['space_phase'])
-            looking_to_print_list.append(TXT['landing_sequence']['chat'])
+            looking_to_print_list.append(('phase', landing_sequence_text['space_phase']))
+            looking_to_print_list.append(('chat', chat[1:]))
+            if is_low_on_fuel:
+                looking_to_print_list.append(('error', failure_text['space_phase']['low_fuel']))
 
-            cls.__run_print_list(looking_to_print_list)
+            cls.__run_print_list(looking_to_print_list, 0.5, 1.8)
             # Atmosphere phase
-            looking_to_print_list.append(landing_sequence_text['atmosphere_phase'])
+            looking_to_print_list.append(('phase', landing_sequence_text['atmosphere_phase']))
+            if is_low_on_fuel:
+                looking_to_print_list.append(('error',
+                                              failure_text['atmosphere_phase']['low_fuel']))
 
-            cls.__run_print_list(looking_to_print_list)
+            cls.__run_print_list(looking_to_print_list, 0.8, 2.0)
             # Glide phase
-            looking_to_print_list.append(landing_sequence_text['glide_phase'])
+            looking_to_print_list.append(('phase', landing_sequence_text['glide_phase']))
+            if is_low_on_fuel:
+                looking_to_print_list.append(('error',
+                                             failure_text['glide_phase']['low_fuel']))
 
-            cls.__run_print_list(looking_to_print_list)
+            if has_bad_terrain:
+                looking_to_print_list.append(('error',
+                                             failure_text['glide_phase']['bad_terrain']))
+
+            if is_planet_wide_ocean:
+                looking_to_print_list.append(('error',
+                                             failure_text['glide_phase']['planet_wide_ocean']))
+
+            cls.__run_print_list(looking_to_print_list, 0.5, 1.2)
             # touchdown phase
-            looking_to_print_list.append(landing_sequence_text['touchdown_phase'])
+            looking_to_print_list.append(('phase', landing_sequence_text['touchdown_phase']))
 
-            cls.__run_print_list(looking_to_print_list)
+            cls.__run_print_list(looking_to_print_list, 1.0, 1.6)
 
         @classmethod
-        def __run_print_list(cls, print_list: list):
+        def __run_print_list(cls,
+                             print_list: list,
+                             delay_min: float = 0.1,
+                             delay_max: float = 0.1):
             ''' Takes a list of lists of printables and
-                prints randomically. '''
+                prints randomically.
+                format of print_list: [('chat', ['chat_message_a', 'chat_message_b'])]
+            '''
             while print_list != []:
-                print_sample = r.choice(print_list)
+                print_type, print_sample = r.choice(print_list)
                 if print_sample == []:
-                    print_list.remove(print_sample)
+                    print_list.remove((print_type, print_sample))
                     continue
                 to_print = print_sample.pop(0)
-                cls.__print_landing_message(to_print, 'phase')
-                time.sleep(0.1)
-
+                cls.__print_landing_message(to_print, print_type)
+                sleep_amount = r.random() * (delay_max - delay_min) + delay_min
+                time.sleep(sleep_amount)
 
         @staticmethod
         def __print_landing_message(message: str, came_from: str):
@@ -237,7 +286,7 @@ class AvailableCommands:
         argument_count = 1
 
         @staticmethod
-        def execute(splitted_line, seedship) -> None:
+        def execute(splitted_line, seedship, status: GameStatus) -> None:
             scanners = {scanner.name.lower(): scanner
                         for scanner in seedship.scanners.values()}
             scanner_to_upgrade = splitted_line[1].lower()
@@ -252,7 +301,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship) -> None:
+        def execute(splitted_line, seedship, status: GameStatus) -> None:
             for text in TXT['help_text'].values():
                 print(text)
                 time.sleep(0.2)
@@ -262,7 +311,7 @@ class AvailableCommands:
         argument_count = 0
 
         @classmethod
-        def execute(cls, splitted_line, seedship) -> None:
+        def execute(cls, splitted_line, seedship, status: GameStatus) -> None:
             scan_result = seedship.scan_planet()
             cls.print_scan_result(scan_result)
 
@@ -273,7 +322,7 @@ class AvailableCommands:
         NO_LANDSCAPE = TXT['landscape']['no_landscape']
 
         @classmethod
-        def execute(cls, splitted_line, seedship) -> None:
+        def execute(cls, splitted_line, seedship, status: GameStatus) -> None:
             scan_result = seedship.probe_planet()
             Logger.log_probe(seedship.probes_left)
             cls.print_scan_result(scan_result)
@@ -297,7 +346,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship) -> None:
+        def execute(splitted_line, seedship, status: GameStatus) -> None:
             for shutdown_text in TXT['shutdown_sequence']:
                 print(shutdown_text)
                 time.sleep(0.15)
@@ -317,7 +366,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship) -> None:
+        def execute(splitted_line, seedship, status: GameStatus) -> None:
             os.system('cls') if os.name == 'nt' else os.system('clear')
 
     class Idle:
@@ -325,7 +374,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship) -> None:
+        def execute(splitted_line, seedship, status: GameStatus) -> None:
             pass
 
     class Exit:
@@ -333,7 +382,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship) -> bool:
+        def execute(splitted_line, seedship, status: GameStatus) -> bool:
             return True
 
     class Roll:
@@ -347,7 +396,7 @@ class AvailableCommands:
                 self.dice = dice
 
         @classmethod
-        def execute(cls, splitted_line, seedship) -> None:
+        def execute(cls, splitted_line, seedship, status: GameStatus) -> None:
             translated_sum = TXT['messages'].get('sum_die', 'Sum of die')
             for amount, faces in cls.parse_dice(splitted_line):
                 sum_dice = 0
@@ -375,7 +424,7 @@ class AvailableCommands:
                 except ValueError:
                     raise cls.RollException(f'invalid_dice', 'd'.join(i))
 
-    all = [Damage, Status, Upgrade, Help, Scan, Regenerate,
+    all = [Damage, Status, Upgrade, Help, Scan, Regenerate, Evade,
            Probe, Sleep, Clear, Waste, Idle, Land, Roll]
     all_commands = [c.command for c in all]
     command_to_class = dict(zip(all_commands, all))

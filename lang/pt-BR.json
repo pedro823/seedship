@@ -93,7 +93,7 @@
     "energy": "Energia"
   },
   "status": {
-    "probes_left": "Sondas restantes"
+    "probes_left": "Sondas"
   },
   "command": {
     "damage": "damage",
@@ -125,7 +125,8 @@
     "are_you_sure": "Você tem certeza?",
     "yes": "Sim",
     "no": "Não",
-    "land_confirmation_no": "Não? Ok então. Seguiremos no percurso."
+    "land_confirmation_no": "Não? Ok então. Seguiremos no percurso.",
+    "evade_confirmation": "Confirmado. Vamos evitar colisões e mudar de curso."
   },
   "error_messages": {
     "no_such_command": "Este comando não existe",
@@ -201,7 +202,7 @@
         "[+] Recolhendo painel solar..."
       ],
       "atmosphere_phase": [
-        "[+] Analisando melhor ângulo de ataque para a atmosfera",
+        "[+] Analisando melhor ângulo de ataque para a atmosfera...",
         "[+] Analisado. Posicionando nave.",
         "[+] Atenção: Entrando na atmosfera.",
         "[+] Invertendo nave para menor drag...",
@@ -240,7 +241,7 @@
     "failures": {
       "space_phase": {
         "low_fuel": [
-          "[!] Quantidade de gasolina insuficiente. Ejetando scanners para adquirir mais velocidade..."
+          "[!] Quantidade de combustível insuficiente. Ejetando scanners para adquirir mais velocidade..."
         ],
         "random": [
           "[!] Nave atingida por um meteoroide pequeno. Nenhum dano reportado."

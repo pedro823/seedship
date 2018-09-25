@@ -49,7 +49,7 @@ class SeedshipConsumable:
 
     def get_color(self) -> str:
         ''' Gets status level color '''
-        ratio = self.amount / self.full_amount
+        ratio = self.get_ratio()
         if ratio <= 0.1:
             return Color.RED + Color.BLINK
         if ratio <= 0.4:
@@ -59,6 +59,10 @@ class SeedshipConsumable:
         if ratio <= 0.95:
             return Color.LIGHT_GREEN
         return Color.GREEN
+
+    def get_ratio(self) -> float:
+        ''' Gets ratio of amount / full_amount '''
+        return self.amount / self.full_amount
 
     def waste(self, amount: int):
         if amount < 0:
@@ -195,6 +199,7 @@ class Seedship:
         self.fuel = SeedshipConsumable('fuel', 200)
         self.energy = SeedshipConsumable('energy', 40)
         self.consumables = [self.fuel, self.energy]
+        self.evaded_colision = False
 
     def scan_planet(self) -> ScanResult:
         ''' Scans a planet with seedship's own scanners '''
@@ -223,8 +228,15 @@ class Seedship:
         return self.scan_result
 
     def find_new_planet(self):
-        self.planet = Planet.from_scanners(self.scanners)
+        if self.evaded_colision:
+            self.planet = Planet.from_evasion(self.scanners)
+            self.evaded_colision = False
+        else:
+            self.planet = Planet.from_scanners(self.scanners)
         self.scan_result = None
+
+    def evade_colision(self):
+        self.evaded_colision = True
 
     def deal_trace_damage(self):
         ''' Deals trace damage by wear & tear '''

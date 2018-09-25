@@ -57,7 +57,7 @@ class AvailableFeatures:
             probability = [15, 25, 30]  # 0, 1, 2
 
         class Good:
-            text = translate_feature('atmosphere', 'semi_rare')
+            text = translate_feature('atmosphere', 'good')
             color = Color.GREEN
             feature_multiplier = {
                 'plants': 1.2,

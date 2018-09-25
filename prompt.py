@@ -2,6 +2,7 @@ from parser import Parser
 from language import TXT
 from util import SeedshipExecutionError
 from commands import AvailableCommands
+from game_status import GameStatus
 
 
 def translate_exception(exception):
@@ -18,6 +19,7 @@ class Prompt:
 
     @classmethod
     def serve_forever(cls, seedship):
+        status = GameStatus()
         while True:
             try:
                 line = input(cls.PROMPT_TEXT)
@@ -25,9 +27,9 @@ class Prompt:
                 if isinstance(parse_result, Parser.ParseFailure):
                     cls.__handle_parse_failure(parse_result)
                     continue
-                do_break = parse_result.command.execute(parse_result.splitted_line, seedship)
+                do_break = parse_result.command.execute(parse_result.splitted_line, seedship, status)
                 if do_break:
-                    cls.show_final_stats()
+                    cls.show_final_stats(status)
                     break
             except EOFError:
                 print()
@@ -39,7 +41,7 @@ class Prompt:
                 cls.__handle_execution_failure(ex, parse_result.splitted_line)
 
     @classmethod
-    def show_final_stats(cls):
+    def show_final_stats(cls, final_stats: GameStatus):
         pass
 
     @classmethod
