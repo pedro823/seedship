@@ -1,7 +1,7 @@
-from language import TXT
+from src.language import TXT
 import random as r
-from util import Color, SeedshipExecutionError
-from planet import Planet
+from src.util import Color, SeedshipExecutionError
+from src.planet import Planet
 
 
 class SeedshipModule:

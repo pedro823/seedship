@@ -2,6 +2,7 @@ import json
 
 AVAIL_LANGS = (
     'pt-BR'
+    'en-US'
 )
 
 LANGUAGE = 'pt-BR'

@@ -1,8 +1,8 @@
-from parser import Parser
-from language import TXT
-from util import SeedshipExecutionError
-from commands import AvailableCommands
-from game_status import GameStatus
+from src.parser import Parser
+from src.language import TXT
+from src.util import SeedshipExecutionError
+from src.commands import AvailableCommands
+from src.game_status import GameStatus
 
 
 def translate_exception(exception):

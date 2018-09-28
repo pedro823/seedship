@@ -1,11 +1,11 @@
-from language import TXT
-from util import Color, SeedshipExecutionError
-from logger import Logger
-from game_status import GameStatus
-from landscape import AvailableLandscape
-from features import AvailableFeatures
+from src.language import TXT
+from src.util import Color, SeedshipExecutionError
+from src.logger import Logger
+from src.game_status import GameStatus
+from src.landscape import AvailableLandscape
+from src.features import AvailableFeatures
 import random as r
-from seedship import Scanner
+from src.seedship import Scanner
 import os
 import time
 
@@ -221,14 +221,14 @@ class AvailableCommands:
             if is_low_on_fuel:
                 looking_to_print_list.append(('error', failure_text['space_phase']['low_fuel']))
 
-            cls.__run_print_list(looking_to_print_list, 0.5, 1.8)
+            cls.__run_print_list(looking_to_print_list, 1.2, 3.4)
             # Atmosphere phase
             looking_to_print_list.append(('phase', landing_sequence_text['atmosphere_phase']))
             if is_low_on_fuel:
                 looking_to_print_list.append(('error',
                                               failure_text['atmosphere_phase']['low_fuel']))
 
-            cls.__run_print_list(looking_to_print_list, 0.8, 2.0)
+            cls.__run_print_list(looking_to_print_list, 2.0, 4.0)
             # Glide phase
             looking_to_print_list.append(('phase', landing_sequence_text['glide_phase']))
             if is_low_on_fuel:
@@ -243,11 +243,11 @@ class AvailableCommands:
                 looking_to_print_list.append(('error',
                                              failure_text['glide_phase']['planet_wide_ocean']))
 
-            cls.__run_print_list(looking_to_print_list, 0.5, 1.2)
+            cls.__run_print_list(looking_to_print_list, 1.3, 4.5)
             # touchdown phase
             looking_to_print_list.append(('phase', landing_sequence_text['touchdown_phase']))
 
-            cls.__run_print_list(looking_to_print_list, 1.0, 1.6)
+            cls.__run_print_list(looking_to_print_list, 1.8, 4.5)
 
         @classmethod
         def __run_print_list(cls,

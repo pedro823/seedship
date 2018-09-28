@@ -1,7 +1,7 @@
-from language import LANG_DICT
+from src.language import LANG_DICT
 import random as r
-from features import AvailableFeatures
-from landscape import AvailableLandscape
+from src.features import AvailableFeatures
+from src.landscape import AvailableLandscape
 
 
 def translate(attribute: str) -> str:

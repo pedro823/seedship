@@ -1,0 +1,9 @@
+#!/bin/env python3
+
+from src.language import AVAIL_LANGS
+from src.prompt import Prompt
+from src.seedship import Seedship
+
+s = Seedship()
+s.find_new_planet()
+Prompt.serve_forever(s)
