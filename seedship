@@ -1,9 +1,30 @@
 #!/bin/env python3
-
-from src.language import AVAIL_LANGS
+from src.language import AVAIL_LANGS, load_language
 from src.prompt import Prompt
 from src.seedship import Seedship
+from src.util import clear_screen
 
+
+def select_language() -> str:
+    clear_screen()
+    print('#' * 80)
+    print('#' + ' ' * 78 + '#')
+    print('#' + 'Select Language'.center(78) + '#')
+    print('#' + ' ' * 78 + '#')
+    language_string = ''
+    for language in AVAIL_LANGS:
+        pass
+    print('#' * 80)
+    return 'pt-BR'
+
+
+# LANGUAGE = select_language()
+LANGUAGE = 'pt-BR'
+TXT = LANG_DICT = load_language(LANGUAGE)
+
+clear_screen()
+input('\n' * 20 + '[ENTER PARA COMEÇAR A JORNADA]')
+clear_screen()
 s = Seedship()
 s.find_new_planet()
 Prompt.serve_forever(s)

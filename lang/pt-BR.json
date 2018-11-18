@@ -104,7 +104,9 @@
     "sleep": "sleep",
     "land": "land",
     "roll": "roll",
-    "exit": "exit"
+    "exit": "exit",
+    "save": "save",
+    "load": "load"
   },
   "help_text": {
     "damage":  "damage <escaneador> <quantia> -- Reporta dano em um escaneador.",
@@ -117,7 +119,8 @@
     "help":    "help                          -- Mostra essa mensagem.",
     "land":    "land                          -- Aterrissa a seedship no planeta atual.",
     "roll":    "roll <[QUANTIA]d[FACES]>      -- Rola dados (ex: roll 2d5 3d10)",
-    "exit":    "exit                          -- sai do programa."
+    "exit":    "exit                          -- sai do programa.",
+    "repair":  "repair <escaneador> <quantia> -- Repara dano em um módulo."
   },
   "messages": {
     "enter_to_wake_up": "aperte enter para acordar",
@@ -138,7 +141,7 @@
     "upgrade_max_level": "O escaneador está no nível máximo",
     "consumable_doesnt_exist": "O consumível não existe",
     "invalid_amount": "Valor inválido",
-    "not_regenerable": "Esse módulo não é regenerável",
+    "not_repairable": "Esse módulo não é reparável",
     "expected": "Esperado",
     "got": "Recebido"
   },
@@ -221,7 +224,7 @@
         "[+] Abrindo todos os freios aéreos...",
         "[+] Velocidade reduzida.",
         "[+] Gastando o combustível de pouso.",
-        "[!] "
+        "[+] Nave estabilizada."
       ],
       "touchdown_phase": [
         "[+] Abrindo airbags de pouso.",

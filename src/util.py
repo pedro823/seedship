@@ -1,3 +1,5 @@
+import os
+
 class Color:
     BLACK =        '\033[0;30m'
     GRAY =         '\033[1;30m'
@@ -21,3 +23,8 @@ class Color:
 
 class SeedshipExecutionError(Exception):
     pass
+
+if os.name == 'nt':
+    clear_screen = lambda: os.system('cls')
+else:
+    clear_screen = lambda: os.system('clear')

@@ -69,7 +69,7 @@ class SeedshipConsumable:
             raise SeedshipExecutionError('invalid_amount')
         self.amount = max(self.amount - amount, 0)
 
-    def regenerate(self, amount: int):
+    def repair(self, amount: int):
         if amount < 0:
             raise SeedshipExecutionError('invalid_amount')
         self.amount = min(self.amount + amount, self.full_amount)
@@ -106,7 +106,7 @@ class Database(SeedshipModule):
     ''' Represents a seedship's database '''
     name = SeedshipModule.resolve_module_name('database')
 
-    def regenerate(self, amount):
+    def repair(self, amount):
         if amount < 0:
             raise SeedshipExecutionError('invalid_amount')
         self.health += amount  # can go over full health, intentional.

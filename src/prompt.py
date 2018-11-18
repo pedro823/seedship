@@ -53,10 +53,15 @@ class Prompt:
             print(f'{translated_exception}: {expected} '
                   + f'{parse_result.command.argument_count}, '
                   + f'{got} {len(parse_result.splitted_line) - 1}')
+            print(cls.__get_help_of_command(parse_result.command.command))
 
         elif exception_string == 'no_such_command':
             print(f'{translated_exception}: {parse_result.splitted_line[0]}')
             print(translate_exception('try_help'))
+
+    @classmethod
+    def __get_help_of_command(cls, command: str) -> str:
+        return TXT['help_text'].get(command, command)
 
     @classmethod
     def __handle_execution_failure(cls, exception: Exception, splitted_line: list):

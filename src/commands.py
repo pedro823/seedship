@@ -6,6 +6,7 @@ from src.landscape import AvailableLandscape
 from src.features import AvailableFeatures
 import random as r
 from src.seedship import Scanner
+import pickle
 import os
 import time
 
@@ -41,6 +42,28 @@ class PlanetRelatedCommand:
 
 
 class AvailableCommands:
+    class Save:
+        command = translate_command('save')
+        argument_count = 0
+
+        @staticmethod
+        def execute(splitted_line, seedship, status: GameStatus) -> None:
+            with open('log/seedship_save.pyc', 'w') as f:
+                pickle.dump(seedship, f)
+            with open('log/status_save.pyc', 'w') as f:
+                pickle.dump(status, f)
+
+    class Load:
+        command = translate_command('load')
+        argument_count = 0
+
+        @staticmethod
+        def execute(splitted_line, seedship, status: GameStatus) -> None:
+            with open('log/seedship_save.pyc') as f:
+                seedship = pickle.loads(f)
+            with open('log/status_save.pyc') as f:
+                status = pickle.dump(f)
+
     class Damage:
         command = translate_command('damage')
         argument_count = 2
@@ -104,29 +127,29 @@ class AvailableCommands:
             print(translated_confirmation)
             seedship.evade_colision()
 
-    class Regenerate:
-        command = translate_command('regenerate')
+    class Repair:
+        command = translate_command('repair')
         argument_count = 2
 
         @staticmethod
         def execute(splitted_line, seedship, status: GameStatus) -> None:
-            to_be_regenerated = splitted_line[1].lower()
+            to_be_repaired = splitted_line[1].lower()
 
             try:
                 amount = int(splitted_line[2])
             except ValueError:
                 raise SeedshipExecutionError('invalid_amount')
 
-            # to_be_regenerated should be consumable or a database
-            regenerable = {consumable.name.lower(): consumable
+            # to_be_repaired should be consumable or a database
+            repairable = {consumable.name.lower(): consumable
                            for consumable in seedship.consumables}
-            regenerable.update({database.name.lower(): database
+            repairable.update({database.name.lower(): database
                                 for database in seedship.databases.values()})
 
-            if to_be_regenerated not in regenerable:
-                raise SeedshipExecutionError('not_regenerable')
+            if to_be_repaired not in repairable:
+                raise SeedshipExecutionError('not_repairable')
 
-            regenerable[to_be_regenerated].regenerate(amount)
+            repairable[to_be_repaired].repair(amount)
 
     class Status:
         command = translate_command('status')
@@ -221,7 +244,7 @@ class AvailableCommands:
             if is_low_on_fuel:
                 looking_to_print_list.append(('error', failure_text['space_phase']['low_fuel']))
 
-            cls.__run_print_list(looking_to_print_list, 1.2, 3.4)
+            cls.__run_print_list(looking_to_print_list, 2.0, 5.0)
             # Atmosphere phase
             looking_to_print_list.append(('phase', landing_sequence_text['atmosphere_phase']))
             if is_low_on_fuel:
@@ -243,11 +266,11 @@ class AvailableCommands:
                 looking_to_print_list.append(('error',
                                              failure_text['glide_phase']['planet_wide_ocean']))
 
-            cls.__run_print_list(looking_to_print_list, 1.3, 4.5)
+            cls.__run_print_list(looking_to_print_list, 2.8, 6.0)
             # touchdown phase
             looking_to_print_list.append(('phase', landing_sequence_text['touchdown_phase']))
 
-            cls.__run_print_list(looking_to_print_list, 1.8, 4.5)
+            cls.__run_print_list(looking_to_print_list, 3.8, 6.0)
 
         @classmethod
         def __run_print_list(cls,
@@ -424,7 +447,7 @@ class AvailableCommands:
                 except ValueError:
                     raise cls.RollException(f'invalid_dice', 'd'.join(i))
 
-    all = [Damage, Status, Upgrade, Help, Scan, Regenerate, Evade,
+    all = [Damage, Status, Upgrade, Help, Scan, Repair, Evade,
            Probe, Sleep, Clear, Waste, Idle, Land, Roll]
     all_commands = [c.command for c in all]
     command_to_class = dict(zip(all_commands, all))
