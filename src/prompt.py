@@ -2,7 +2,7 @@ from src.parser import Parser
 from src.language import TXT
 from src.util import SeedshipExecutionError
 from src.commands import AvailableCommands
-from src.game_status import GameStatus
+from src.game_stats import GameStats
 
 
 def translate_exception(exception):
@@ -19,7 +19,7 @@ class Prompt:
 
     @classmethod
     def serve_forever(cls, seedship):
-        status = GameStatus()
+        status = GameStats()
         while True:
             try:
                 line = input(cls.PROMPT_TEXT)
@@ -46,7 +46,7 @@ class Prompt:
                 cls.__handle_execution_failure(ex, parse_result.splitted_line)
 
     @classmethod
-    def show_final_stats(cls, final_stats: GameStatus):
+    def show_final_stats(cls, final_stats: GameStats):
         pass
 
     @classmethod

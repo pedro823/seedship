@@ -1,7 +1,7 @@
 from src.language import TXT
 from src.util import Color, SeedshipExecutionError
 from src.logger import Logger
-from src.game_status import GameStatus
+from src.game_stats import GameStats
 from src.landscape import AvailableLandscape
 from src.features import AvailableFeatures
 from src.seedship import Seedship
@@ -48,30 +48,30 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> None:
+        def execute(splitted_line, seedship, stats: GameStats) -> None:
             with open('log/seedship_save.pyc', 'wb') as f:
                 pickle.dump(seedship, f)
-            with open('log/status_save.pyc', 'wb') as f:
-                pickle.dump(status, f)
+            with open('log/stats_save.pyc', 'wb') as f:
+                pickle.dump(stats, f)
 
     class Load:
         command = translate_command('load')
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> (Seedship, GameStatus):
+        def execute(splitted_line, seedship, stats: GameStats) -> (Seedship, GameStats):
             with open('log/seedship_save.pyc', 'rb') as f:
                 seedship = pickle.load(f)
-            with open('log/status_save.pyc', 'rb') as f:
-                status = pickle.load(f)
-            return seedship, status
+            with open('log/stats_save.pyc', 'rb') as f:
+                stats = pickle.load(f)
+            return seedship, stats
 
     class Damage:
         command = translate_command('damage')
         argument_count = 2
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> None:
+        def execute(splitted_line, seedship, stats: GameStats) -> None:
             module_to_damage = splitted_line[1].lower()
             translated_modules = {}
 
@@ -97,7 +97,7 @@ class AvailableCommands:
         argument_count = 2
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> None:
+        def execute(splitted_line, seedship, stats: GameStats) -> None:
             consumable_to_waste = splitted_line[1].lower()
             try:
                 amount = int(splitted_line[2])
@@ -124,7 +124,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> None:
+        def execute(splitted_line, seedship, stats: GameStats) -> None:
             translated_confirmation = translate_phrase('evade_confirmation')
             print(translated_confirmation)
             seedship.evade_colision()
@@ -134,7 +134,7 @@ class AvailableCommands:
         argument_count = 2
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> None:
+        def execute(splitted_line, seedship, stats: GameStats) -> None:
             to_be_repaired = splitted_line[1].lower()
 
             try:
@@ -158,7 +158,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> None:
+        def execute(splitted_line, seedship, stats: GameStats) -> None:
             for module_list in seedship.modules:
                 has_printed_module_list_name = False
                 for module in module_list.values():
@@ -211,7 +211,7 @@ class AvailableCommands:
         argument_count = 0
 
         @classmethod
-        def execute(cls, splitted_line, seedship, status: GameStatus) -> bool:
+        def execute(cls, splitted_line, seedship, stats: GameStats) -> bool:
             are_you_sure = translate_phrase('are_you_sure')
             yes = translate_phrase('yes').lower()
             no = translate_phrase('no')
@@ -311,7 +311,7 @@ class AvailableCommands:
         argument_count = 1
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> None:
+        def execute(splitted_line, seedship, stats: GameStats) -> None:
             scanners = {scanner.name.lower(): scanner
                         for scanner in seedship.scanners.values()}
             scanner_to_upgrade = splitted_line[1].lower()
@@ -326,7 +326,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> None:
+        def execute(splitted_line, seedship, stats: GameStats) -> None:
             for text in TXT['help_text'].values():
                 print(text)
                 time.sleep(0.2)
@@ -336,7 +336,7 @@ class AvailableCommands:
         argument_count = 0
 
         @classmethod
-        def execute(cls, splitted_line, seedship, status: GameStatus) -> None:
+        def execute(cls, splitted_line, seedship, stats: GameStats) -> None:
             scan_result = seedship.scan_planet()
             cls.print_scan_result(scan_result)
 
@@ -347,7 +347,7 @@ class AvailableCommands:
         NO_LANDSCAPE = TXT['landscape']['no_landscape']
 
         @classmethod
-        def execute(cls, splitted_line, seedship, status: GameStatus) -> None:
+        def execute(cls, splitted_line, seedship, stats: GameStats) -> None:
             scan_result = seedship.probe_planet()
             Logger.log_probe(seedship.probes_left)
             cls.print_scan_result(scan_result)
@@ -371,7 +371,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> None:
+        def execute(splitted_line, seedship, stats: GameStats) -> None:
             for shutdown_text in TXT['shutdown_sequence']:
                 print(shutdown_text)
                 time.sleep(0.15)
@@ -391,7 +391,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> None:
+        def execute(splitted_line, seedship, stats: GameStats) -> None:
             os.system('cls') if os.name == 'nt' else os.system('clear')
 
     class Idle:
@@ -399,7 +399,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> None:
+        def execute(splitted_line, seedship, stats: GameStats) -> None:
             print(seedship.scanners['atmosphere'].health)
             pass
 
@@ -408,7 +408,7 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> bool:
+        def execute(splitted_line, seedship, stats: GameStats) -> bool:
             return True
 
     class Roll:
@@ -422,7 +422,7 @@ class AvailableCommands:
                 self.dice = dice
 
         @classmethod
-        def execute(cls, splitted_line, seedship, status: GameStatus) -> None:
+        def execute(cls, splitted_line, seedship, stats: GameStats) -> None:
             translated_sum = TXT['messages'].get('sum_die', 'Sum of die')
             for amount, faces in cls.parse_dice(splitted_line):
                 sum_dice = 0
