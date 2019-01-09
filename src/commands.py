@@ -4,6 +4,7 @@ from src.logger import Logger
 from src.game_status import GameStatus
 from src.landscape import AvailableLandscape
 from src.features import AvailableFeatures
+from src.seedship import Seedship
 import random as r
 from src.seedship import Scanner
 import pickle
@@ -48,9 +49,9 @@ class AvailableCommands:
 
         @staticmethod
         def execute(splitted_line, seedship, status: GameStatus) -> None:
-            with open('log/seedship_save.pyc', 'w') as f:
+            with open('log/seedship_save.pyc', 'wb') as f:
                 pickle.dump(seedship, f)
-            with open('log/status_save.pyc', 'w') as f:
+            with open('log/status_save.pyc', 'wb') as f:
                 pickle.dump(status, f)
 
     class Load:
@@ -58,11 +59,12 @@ class AvailableCommands:
         argument_count = 0
 
         @staticmethod
-        def execute(splitted_line, seedship, status: GameStatus) -> None:
-            with open('log/seedship_save.pyc') as f:
-                seedship = pickle.loads(f)
-            with open('log/status_save.pyc') as f:
-                status = pickle.dump(f)
+        def execute(splitted_line, seedship, status: GameStatus) -> (Seedship, GameStatus):
+            with open('log/seedship_save.pyc', 'rb') as f:
+                seedship = pickle.load(f)
+            with open('log/status_save.pyc', 'rb') as f:
+                status = pickle.load(f)
+            return seedship, status
 
     class Damage:
         command = translate_command('damage')
@@ -398,6 +400,7 @@ class AvailableCommands:
 
         @staticmethod
         def execute(splitted_line, seedship, status: GameStatus) -> None:
+            print(seedship.scanners['atmosphere'].health)
             pass
 
     class Exit:
@@ -447,7 +450,7 @@ class AvailableCommands:
                 except ValueError:
                     raise cls.RollException(f'invalid_dice', 'd'.join(i))
 
-    all = [Damage, Status, Upgrade, Help, Scan, Repair, Evade,
+    all = [Save, Load, Damage, Status, Upgrade, Help, Scan, Repair, Evade,
            Probe, Sleep, Clear, Waste, Idle, Land, Roll]
     all_commands = [c.command for c in all]
     command_to_class = dict(zip(all_commands, all))

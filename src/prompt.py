@@ -27,6 +27,11 @@ class Prompt:
                 if isinstance(parse_result, Parser.ParseFailure):
                     cls.__handle_parse_failure(parse_result)
                     continue
+                # Load has special treatment. TODO rethink
+                if parse_result.command == AvailableCommands.Load:
+                    seedship, status = parse_result.command.execute(parse_result.splitted_line, seedship, status)
+                    continue
+
                 do_break = parse_result.command.execute(parse_result.splitted_line, seedship, status)
                 if do_break:
                     cls.show_final_stats(status)
