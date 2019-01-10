@@ -1,8 +1,9 @@
 from src.parser import Parser
 from src.language import TXT
 from src.util import SeedshipExecutionError
-from src.commands import AvailableCommands
+from src.commands import AvailableCommands, ShowStats
 from src.game_stats import GameStats
+import time
 
 
 def translate_exception(exception):
@@ -34,7 +35,8 @@ class Prompt:
 
                 do_break = parse_result.command.execute(parse_result.splitted_line, seedship, status)
                 if do_break:
-                    cls.show_final_stats(status)
+                    time.sleep(3)
+                    ShowStats.execute(seedship, status)
                     break
             except EOFError:
                 print()
@@ -44,10 +46,6 @@ class Prompt:
                 continue
             except SeedshipExecutionError as ex:
                 cls.__handle_execution_failure(ex, parse_result.splitted_line)
-
-    @classmethod
-    def show_final_stats(cls, final_stats: GameStats):
-        pass
 
     @classmethod
     def __handle_parse_failure(cls, parse_result: Parser.ParseFailure):

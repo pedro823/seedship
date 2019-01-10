@@ -296,6 +296,17 @@
       }
     }
   },
+  "stats": {
+    "you_have_landed": "Você aterrisou.",
+    "game_stats": "Estatísticas da aventura",
+    "time_elapsed": "Tempo decorrido",
+    "planets_scanned": "Planetas escaneados",
+    "planets_probed": "Planetas sondados",
+    "total_damage_taken": "Dano total absorvido",
+    "sleeps_taken": "Número de vezes que a IA hibernou",
+    "modules_upgraded": "Número de aprimorações em módulos",
+    "total_fuel_wasted": "Combustível gasto"
+  },
   "wake_up_messages": [
     "Olá de novo, IA.",
     "A humanidade conta com você, IA.",

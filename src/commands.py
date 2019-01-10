@@ -90,6 +90,7 @@ class AvailableCommands:
                 raise SeedshipExecutionError('invalid_amount')
 
             translated_modules[module_to_damage].damage(amount)
+            stats.total_damage_taken += amount
             Logger.log_damage(seedship, {'module': module_to_damage, 'amount': amount})
 
     class Waste:
@@ -115,6 +116,7 @@ class AvailableCommands:
                 Logger.log_waste(seedship, {'consumable': consumable_to_waste, 'amount': amount})
             elif consumable_to_waste in translated_consumables:
                 translated_consumables[consumable_to_waste].waste(amount)
+                stats.total_fuel_wasted += amount
                 Logger.log_waste(seedship, {'consumable': consumable_to_waste, 'amount': amount})
             else:
                 raise SeedshipExecutionError('consumable_doesnt_exist')
@@ -217,6 +219,7 @@ class AvailableCommands:
             no = translate_phrase('no')
             confirmation = input(f'{are_you_sure} ({yes[0]}/{no[0].upper()}): ').strip().lower()
             if confirmation != '' and confirmation in yes.lower():
+                stats.end_game()
                 cls.__print_landing_sequence(seedship)
                 return True
             print(translate_phrase('land_confirmation_no'))
@@ -246,7 +249,7 @@ class AvailableCommands:
             if is_low_on_fuel:
                 looking_to_print_list.append(('error', failure_text['space_phase']['low_fuel']))
 
-            cls.__run_print_list(looking_to_print_list, 2.0, 5.0)
+            cls.__run_print_list(looking_to_print_list, 2.0, 4.0)
             # Atmosphere phase
             looking_to_print_list.append(('phase', landing_sequence_text['atmosphere_phase']))
             if is_low_on_fuel:
@@ -268,11 +271,11 @@ class AvailableCommands:
                 looking_to_print_list.append(('error',
                                              failure_text['glide_phase']['planet_wide_ocean']))
 
-            cls.__run_print_list(looking_to_print_list, 2.8, 6.0)
+            cls.__run_print_list(looking_to_print_list, 2.5, 5.0)
             # touchdown phase
             looking_to_print_list.append(('phase', landing_sequence_text['touchdown_phase']))
 
-            cls.__run_print_list(looking_to_print_list, 3.8, 6.0)
+            cls.__run_print_list(looking_to_print_list, 2.8, 5.0)
 
         @classmethod
         def __run_print_list(cls,
@@ -320,6 +323,7 @@ class AvailableCommands:
                 raise SeedshipExecutionError('scanner_doesnt_exist')
 
             scanners[scanner_to_upgrade].upgrade()
+            stats.modules_upgraded += 1
 
     class Help:
         command = translate_command('help')
@@ -338,6 +342,7 @@ class AvailableCommands:
         @classmethod
         def execute(cls, splitted_line, seedship, stats: GameStats) -> None:
             scan_result = seedship.scan_planet()
+            stats.planets_scanned += 1
             cls.print_scan_result(scan_result)
 
     class Probe(PlanetRelatedCommand):
@@ -349,6 +354,7 @@ class AvailableCommands:
         @classmethod
         def execute(cls, splitted_line, seedship, stats: GameStats) -> None:
             scan_result = seedship.probe_planet()
+            stats.planets_probed += 1
             Logger.log_probe(seedship.probes_left)
             cls.print_scan_result(scan_result)
             time.sleep(0.25)
@@ -376,6 +382,7 @@ class AvailableCommands:
                 print(shutdown_text)
                 time.sleep(0.15)
             enter_to_wake_up = translate_phrase('enter_to_wake_up')
+            stats.sleeps_taken += 1
             input(f'[{enter_to_wake_up.upper()}]')
             seedship.find_new_planet()
             seedship.deal_trace_damage()
@@ -400,7 +407,6 @@ class AvailableCommands:
 
         @staticmethod
         def execute(splitted_line, seedship, stats: GameStats) -> None:
-            print(seedship.scanners['atmosphere'].health)
             pass
 
     class Exit:
@@ -458,3 +464,18 @@ class AvailableCommands:
     @classmethod
     def is_command(cls, command):
         return command in cls.all_commands
+
+
+class ShowStats:
+    @staticmethod
+    def execute(seedship: Seedship, game_stats: GameStats):
+        print()
+        time.sleep(0.1)
+        print(TXT['stats'].get('you_have_landed', '').center(80, ' '))
+        time.sleep(0.5)
+        print(TXT['stats'].get('game_stats', '').center(80, ' '))
+        print(f'+{"-" * 78}+')
+        for message, value in game_stats.get_stats().items():
+            time.sleep(0.3)
+            print('+' + f'{TXT["stats"].get(message)}: {value}'.center(78, ' ') + '+')
+            print(f'+{"-" * 78}+')

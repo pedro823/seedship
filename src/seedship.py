@@ -119,6 +119,8 @@ class Colonists:
         self.amount = 1000
 
     def damage(self, amount: int):
+        if amount < 0:
+            raise SeedshipExecutionError('invalid_amount')
         self.amount = max(0, self.amount - amount)
 
     def __lt__(self, number: int):
@@ -143,7 +145,7 @@ class ScanResult:
                           water=planet.water,
                           resources=planet.resources,
                           landscape=planet.landscape,
-                          from_probe=True)
+                          was_from_probe=True)
 
     def __init__(self,
                  atmosphere,
@@ -152,7 +154,7 @@ class ScanResult:
                  water,
                  resources,
                  landscape=None,
-                 from_probe=False):
+                 was_from_probe=False):
         self.features = {
             'atmosphere': atmosphere,
             'gravity': gravity,
@@ -161,7 +163,7 @@ class ScanResult:
             'resources': resources
         }
         self.landscape = landscape
-        self.from_probe = from_probe
+        self.was_from_probe = was_from_probe
 
 
 class Seedship:
@@ -217,7 +219,7 @@ class Seedship:
 
     def probe_planet(self) -> ScanResult:
         ''' Sends a probe to the planet for full scan results '''
-        if self.scan_result is not None and self.scan_result.from_probe:
+        if self.scan_result is not None and self.scan_result.was_from_probe:
             return self.scan_result
         if self.probes_left <= 0:
             raise Exception('No probes left')
