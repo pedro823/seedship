@@ -232,11 +232,11 @@
         "[+] Estabilizando nave.",
         "[+] Contato com o planeta.",
         "[+] Pouso completo.",
-        "[+] Desligando sistema de aterrissagem",
+        "[+] Desligando sistema de aterrissagem.",
         "[+] Desativando criogênese...",
         "[+] Acordando os colonizadores...",
         "[!] Gastando toda a energia restante da nave.",
-        "[+] Desligando sistema de mantimento de vida",
+        "[+] Desligando sistema de mantimento de vida...",
         "[+] Desligando Inteligência Artificial...",
         "[+] Abrindo compartimento de comida..."
       ]
@@ -290,6 +290,8 @@
           "[+] Ajustando compensação de combustível..."
         ],
         "low_energy": [
+          "[!] Tanque de energia quase esgotado.",
+          "[+] Otimizando uso de energia..."
         ]
       }
     }
