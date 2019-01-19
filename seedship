@@ -2,7 +2,7 @@
 from src.language import AVAIL_LANGS, load_language
 from src.prompt import Prompt
 from src.seedship import Seedship
-from src.util import clear_screen
+from src.util import clear_screen, get_screen_size
 
 
 def select_language() -> str:
@@ -18,12 +18,12 @@ def select_language() -> str:
     return 'pt-BR'
 
 
-# LANGUAGE = select_language()
 LANGUAGE = 'pt-BR'
 TXT = LANG_DICT = load_language(LANGUAGE)
 
 clear_screen()
-input('\n' * 20 + '[ENTER PARA COMEÇAR A JORNADA]')
+rows, cols = get_screen_size()
+input(rows // 2 * '\n' + '[ENTER PARA COMEÇAR A JORNADA]')
 clear_screen()
 s = Seedship()
 s.find_new_planet()

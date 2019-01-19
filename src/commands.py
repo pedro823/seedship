@@ -456,10 +456,10 @@ class AvailableCommands:
                 except ValueError:
                     raise cls.RollException(f'invalid_dice', 'd'.join(i))
 
-    all = [Save, Load, Damage, Status, Upgrade, Help, Scan, Repair, Evade,
+    all_classes = [Save, Load, Damage, Status, Upgrade, Help, Scan, Repair, Evade,
            Probe, Sleep, Clear, Waste, Idle, Land, Roll]
-    all_commands = [c.command for c in all]
-    command_to_class = dict(zip(all_commands, all))
+    all_commands = [c.command for c in all_classes]
+    command_to_class = dict(zip(all_commands, all_classes))
 
     @classmethod
     def is_command(cls, command):
