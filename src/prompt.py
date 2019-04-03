@@ -3,7 +3,10 @@ from src.language import TXT
 from src.util import SeedshipExecutionError
 from src.commands import AvailableCommands, ShowStats
 from src.game_stats import GameStats
+from src.seedship import SeedshipConsumable, Scanner, System, Database, Colonists
 import time
+import readline
+import atexit
 
 
 def translate_exception(exception):
@@ -13,6 +16,7 @@ def translate_exception(exception):
 class Prompt:
 
     PROMPT_TEXT = 'sdshp> '
+    HISTORY_FILE = 'log/command_history'
 
     @classmethod
     def show_menu(cls, seedship):
@@ -21,6 +25,9 @@ class Prompt:
     @classmethod
     def serve_forever(cls, seedship):
         status = GameStats()
+        cls.__setup_readline_history()
+        readline.parse_and_bind('tab: complete')
+        readline.set_completer(TabCompleter.complete)
         while True:
             try:
                 line = input(cls.PROMPT_TEXT)
@@ -83,6 +90,47 @@ class Prompt:
             return
         print(f'{translated_exception}: {splitted_line[1]}')
 
+    @classmethod
+    def __setup_readline_history(cls):
+        try:
+            readline.read_history_file(cls.HISTORY_FILE)
+            readline.set_history_length(100)
+        except FileNotFoundError:
+            pass
+
+        atexit.register(readline.write_history_file, cls.HISTORY_FILE)
+
+
+class TabCompleter:
+
+    COMMANDS = AvailableCommands.all_commands
+    MODULE_NAMES = tuple(i.name for i in (SeedshipConsumable, Scanner, System, Database, Colonists))
+    completers = []
+
+    @classmethod
+    def __complete_command(cls, text):
+        return [command
+                for command in cls.COMMANDS
+                if command.startswith(text)]
+
+    @classmethod
+    def __complete_modules(cls, text):
+        return [module
+                for module in cls.MODULE_NAMES
+                if module.startswith(text)]
+
+    @classmethod
+    def complete(cls, text, state):
+        if state == 0:
+            commands = cls.__complete_command(text)
+            modules = cls.__complete_modules(text)
+            cls.completers = commands + modules
+
+        completers = cls.completers
+
+        if state >= len(completers):
+            return None
+        return completers[state]
 
 if __name__ == '__main__':
     from seedship import Seedship
