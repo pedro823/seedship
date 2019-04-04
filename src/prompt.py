@@ -27,7 +27,7 @@ class Prompt:
         status = GameStats()
         cls.__setup_readline_history()
         readline.parse_and_bind('tab: complete')
-        readline.set_completer(TabCompleter.complete)
+        readline.set_completer(TabCompleter(seedship).complete)
         while True:
             try:
                 line = input(cls.PROMPT_TEXT)
@@ -103,30 +103,34 @@ class Prompt:
 
 class TabCompleter:
 
-    COMMANDS = AvailableCommands.all_commands
-    MODULE_NAMES = tuple(i.name for i in (SeedshipConsumable, Scanner, System, Database, Colonists))
-    completers = []
 
-    @classmethod
-    def __complete_command(cls, text):
+    def __init__(self, seedship):
+        self.commands = AvailableCommands.all_commands
+        self.modules = []
+        for module_type in seedship.modules:
+            for module in module_type.values():
+                self.modules.append(module.name.lower())
+
+        self.completers = []
+
+    def __complete_command(self, text):
         return [command
-                for command in cls.COMMANDS
+                for command in self.commands
                 if command.startswith(text)]
 
-    @classmethod
-    def __complete_modules(cls, text):
+    def __complete_modules(self, text):
         return [module
-                for module in cls.MODULE_NAMES
+                for module in self.modules
                 if module.startswith(text)]
 
-    @classmethod
-    def complete(cls, text, state):
+    def complete(self, text, state):
         if state == 0:
-            commands = cls.__complete_command(text)
-            modules = cls.__complete_modules(text)
-            cls.completers = commands + modules
+            lower_text = text.lower()
+            commands = self.__complete_command(lower_text)
+            modules = self.__complete_modules(lower_text)
+            self.completers = commands + modules
 
-        completers = cls.completers
+        completers = self.completers
 
         if state >= len(completers):
             return None
