@@ -1,4 +1,4 @@
-from src.language import LANG_DICT
+from src.language import TXT
 import random as r
 from src.features import AvailableFeatures
 from src.landscape import AvailableLandscape
@@ -6,7 +6,7 @@ from src.landscape import AvailableLandscape
 
 def translate(attribute: str) -> str:
     ''' Does one-time translation of every planet feature. '''
-    return LANG_DICT['scanner']['categories'].get(attribute, attribute)
+    return TXT['scanner']['categories'].get(attribute, attribute)
 
 
 class Planet:

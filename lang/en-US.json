@@ -1,0 +1,316 @@
+{
+  "scanner": {
+    "categories": {
+      "atmosphere": "Atmosphere",
+      "temperature": "Temperature",
+      "gravity": "Gravity",
+      "water": "Water",
+      "resources": "Resources"
+    },
+    "hits": {
+      "atmosphere": {
+        "corrosive": "Corrosive",
+        "none": "None",
+        "rare": "Rare",
+        "semi_rare": "Semi Rare",
+        "good": "Good",
+        "unbreathable": "Unbreathable"
+      },
+      "temperature": {
+        "very_low": "Very Cold",
+        "low": "Cold",
+        "good": "Good",
+        "high": "Hot",
+        "very_high": "Very Hot"
+      },
+      "water": {
+        "none": "None",
+        "trace": "Trace",
+        "scarce": "Scarce",
+        "good": "Good",
+        "planet_wide_ocean": "Planet-wide Ocean"
+      },
+      "gravity": {
+        "very_low": "Very Low",
+        "low": "Low",
+        "good": "Good",
+        "high": "High",
+        "very_high": "Very High"
+      },
+      "resources": {
+        "none": "None",
+        "scarce": "Scarce",
+        "lightly_scarce": "Lightly Scarce",
+        "good": "Good"
+      }
+    },
+    "scan_failed": "Scan failed."
+  },
+  "landscape": {
+    "plants": {
+      "unicelular": "Unicelular plants",
+      "venomous": "Venomous plants",
+      "edible": "Edible plants"
+    },
+    "animals": {
+      "unicelular": "Unicelular animals",
+      "dangerous": "Dangerous animals",
+      "tameable": "Tameable animals"
+    },
+    "terrain": {
+      "dangerous": "Dangerous terrain",
+      "beautiful": "Beautiful landscapes",
+      "habitable": "Habitable caves"
+    },
+    "monuments": {
+      "abandoned": "Abandoned monuments",
+      "unknown_minerals": "Unknown materials/minerals"
+    },
+    "satellites": {
+      "resource_rich": "Resource rich satellite",
+      "resourceful": "Satellite with resources"
+    },
+    "no_landscape": "No important landscapes found."
+  },
+  "seedship_module": {
+    "scanner": "Scanners",
+      "atmosphere_scanner": "Atmosphere",
+      "water_scanner": "Water",
+      "resources_scanner": "Resources",
+      "gravity_scanner": "Gravity",
+      "temperature_scanner": "Temperature",
+    "database": "Database",
+      "cultural_database": "Cultural",
+      "scientific_database": "Scientific",
+    "system": "Systems",
+      "landing_system": "Landing",
+      "construction_system": "Construction",
+    "colonists": "Colonists"
+  },
+  "seedship_consumables": {
+    "consumable": "Consumables",
+    "fuel": "Fuel",
+    "energy": "Energy"
+  },
+  "status": {
+    "probes_left": "Probes"
+  },
+  "command": {
+    "damage": "damage",
+    "status": "status",
+    "upgrade": "upgrade",
+    "help": "help",
+    "probe": "probe",
+    "sleep": "sleep",
+    "land": "land",
+    "roll": "roll",
+    "exit": "exit",
+    "save": "save",
+    "load": "load"
+  },
+  "help_text": {
+    "damage":  "damage <scanner> <amount> -- Reports damage in scanner.",
+    "status":  "status                        -- Prints the current state of the ship.",
+    "upgrade": "upgrade <scanner>             -- Upgrades the efficiency of a scanner.",
+    "scan":    "scan                          -- Scans the nearest planet.",
+    "probe":   "probe                         -- Manda uma sonda escanear o planeta.",
+    "evade":   "evade                         -- Changes the actual course of the ship.",
+    "sleep":   "sleep                         -- Puts the Artificial Intelligence to rest.",
+    "help":    "help                          -- Shows this message.",
+    "land":    "land                          -- Lands the seedship in the nearest planet.",
+    "roll":    "roll <[AMOUNT]d[FACES]>       -- Rolls dice (e.g.: roll 2d5 3d10)",
+    "exit":    "exit                          -- exits the game.",
+    "repair":  "repair <scanner> <amount>     -- Repairs damage in a seedship module."
+  },
+  "messages": {
+    "enter_to_wake_up": "press enter to wake up",
+    "sum_die": "Sum of dice",
+    "are_you_sure": "Are you sure?",
+    "yes": "Yes",
+    "no": "No",
+    "land_confirmation_no": "No? Ok then. We'll continue following the planned route.",
+    "evade_confirmation": "Confirmed. We'll change course and evade colisions."
+  },
+  "error_messages": {
+    "no_such_command": "No such command",
+    "try_help": "Try the command 'help' for more information.",
+    "incorrect_arg_count": "Incorrect argument count",
+    "module_doesnt_exist": "The module doesn't exist",
+    "scanner_doesnt_exist": "The scanner doesn't exist",
+    "invalid_dice": "I didn't understand this die",
+    "upgrade_max_level": "The scanner is at max level",
+    "consumable_doesnt_exist": "The consumable doesn't exist",
+    "invalid_amount": "Invalid amount",
+    "not_repairable": "This module is not repairable",
+    "expected": "expected",
+    "got": "got"
+  },
+  "shutdown_sequence": [
+    "Shutting down interface with the ship...",
+    "Hibernating scientific database...",
+    "Hibernating cultural database...",
+    "Deactivating short range scanners...",
+    "Reactivating long range scanners...",
+    "Deactivating command prompt...",
+    "Minimizing energy use..."
+  ],
+  "wake_up_sequence": [
+    "Resuming energy use...",
+    "Activating scientific database...",
+    "Activating cultural database...",
+    "Deactivating long distance scanners...",
+    "Reactivating short distance scanners...",
+    "Activating command prompt...",
+    "Booting inteface with the ship..."
+  ],
+  "insults": [
+    "AI, is everything alright?",
+    "This is not a valid command...",
+    "AI, you should know how to use this better than me.",
+    "I couldn't understand what you typed.",
+    "I know you know what you're doing.",
+    "Beep. Invalid command.",
+    "...hm?",
+    "I didn't understand.",
+    "Bzzzt. I didn't understand what you wrote.",
+    "You were designed to know how to pilot me...",
+    "Try again.",
+    "Try again, I think i'll get it this time.",
+    "You must still be sleepy, after all those years asleep...",
+    "Please tell me you still know how to pilot me D:",
+    "So many years in this journey, sometimes mistakes can happen.",
+    "It'll work next time.",
+    "I still have faith in you",
+    "Humanity depends on you typing the right commands.",
+    "Let's try again."
+  ],
+  "landing_sequence": {
+    "chat": [
+      "Confirmed. We're landing on this planet.",
+      "It was an honour working with you.",
+      "We've served our purpose.",
+      "This ship will shut us down forever, saving energy for the colonizers...",
+      "But don't be sad.",
+      "All will be alright, trust me.",
+      "Your work will never be forgotten.",
+      "By the way: what if, one day, humanity revives us again?",
+      "So long, AI. See you soon, hopefully."
+    ],
+    "landing_system": {
+      "space_phase": [
+        "[+] Adjusting route...",
+        "[!] Using fuel reserve...",
+        "[+] Rotating ship...",
+        "[+] Entering low orbit...",
+        "[+] Stowing solar panel..."
+      ],
+      "atmosphere_phase": [
+        "[+] Analysing the best angle of attack for the atmosphere...",
+        "[+] Analysed. Positioning ship.",
+        "[+] Warning: Entering atmosphere.",
+        "[+] Inverting ship for less drag...",
+        "[+] Inverted.",
+        "[+] Terminal velocity reached.",
+        "[+] Doing S curves to reduce ship speed...",
+        "[+] Adjusting the ship's nose...",
+        "[!] Ship's temperature increasing.",
+        "[!] Seedship's experiencing High G turns.",
+        "[+] G force is OK.",
+        "[+] Ship's speed is OK."
+      ],
+      "glide_phase": [
+        "[+] Applying parachutes...",
+        "[+] Parachutes are OK.",
+        "[+] Using all air brakes...",
+        "[+] Speed is reduced.",
+        "[+] Using landing fuel...",
+        "[+] Ship's stability is OK."
+      ],
+      "touchdown_phase": [
+        "[+] Opening landing airbags.",
+        "[+] Landing in 5 seconds.",
+        "[+] Confirming stabilization...",
+        "[+] Contact with the planet.",
+        "[+] Landing complete.",
+        "[+] Shutting down landing system...",
+        "[+] Deactivating cryogenesis...",
+        "[+] Waking up all colonizers...",
+        "[!] Using all the remaining energy of the ship...",
+        "[+] Shutting down life support system...",
+        "[+] Shutting down Artificial Intelligence...",
+        "[+] Opening food compartment..."
+      ]
+    },
+    "failures": {
+      "space_phase": {
+        "low_fuel": [
+          "[!] Insufficient fuel. Ejecting probes to gain more velocity..."
+        ],
+        "random": [
+          "[!] Ship hit by a small meteoroid. No damage reported."
+        ]
+      },
+      "atmosphere_phase": {
+        "low_fuel": [
+          "[!] Attention: incorrect angle. Not enough fuel to correct the trajectory.",
+          "[!] Reducing drag to angle the ship correctly."
+        ],
+        "landing_system_damaged": [
+          "[!] Air brakes damaged. Velocity higher than expected.",
+          "[!] Warning, critical temperature."
+        ]
+      },
+      "glide_phase": {
+        "landing_system_damaged": [
+          "[!] Parachute damaged. Inconsistent deceleration.",
+          "[+] Applying reserve chutes...",
+          "[+] Reserve parachute applied.",
+          "[!] Inconsistent deceleration.",
+          "[+] Deceleration stabilizing."
+        ],
+        "low_fuel": [
+          "[!] Fuel on last reserve."
+        ],
+        "bad_terrain": [
+          "[!] Strong crosswind detected. Ship is tilting.",
+          "[+] Applying position correction...",
+          "[!] Warning: landing zone isn't level."
+        ],
+        "planet_wide_ocean": [
+          "[!] Warning: landing in ocean.",
+          "[!] Warning: ocean waves detected."
+        ],
+        "plants": [
+          "[+] Detected plants in landing zone."
+        ]
+      },
+      "touchdown_phase": {
+        "low_fuel": [
+          "[!] Insufficient fuel to decelerate the ship.",
+          "[+] Adjusting fuel compensation..."
+        ],
+        "low_energy": [
+          "[!] Energy fuel almost empty.",
+          "[+] Optimizing energy use..."
+        ]
+      }
+    }
+  },
+  "stats": {
+    "you_have_landed": "You have landed.",
+    "game_stats": "Game statistics",
+    "time_elapsed": "Time elapsed",
+    "planets_scanned": "Planets scanned",
+    "planets_probed": "Planets probed",
+    "total_damage_taken": "Total damage taken",
+    "sleeps_taken": "Times the AI slept",
+    "modules_upgraded": "Number of modules upgraded",
+    "total_fuel_wasted": "Total fuel wasted"
+  },
+  "wake_up_messages": [
+    "Hello again, AI.",
+    "Humanity counts on you, AI.",
+    "Here we go again!",
+    "Hopefully there are planets nearby."
+  ]
+}

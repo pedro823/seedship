@@ -4,9 +4,8 @@ from src.logger import Logger
 from src.game_stats import GameStats
 from src.landscape import AvailableLandscape
 from src.features import AvailableFeatures
-from src.seedship import Seedship
+from src.seedship import Seedship, Scanner
 import random as r
-from src.seedship import Scanner
 import pickle
 import os
 import time
@@ -25,7 +24,7 @@ class PlanetRelatedCommand:
     def print_scan_result(cls, scan_result):
         for planet_feature, feature_value in scan_result.features.items():
             cls.__print_noln(cls.__translate_feature(planet_feature))
-            for i in range(3):
+            for _ in range(3):
                 time.sleep(0.14)
                 cls.__print_noln('.')
             time.sleep(0.5)

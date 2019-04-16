@@ -1,24 +1,35 @@
 import json
 
-AVAIL_LANGS = (
-    'pt-BR'
-    'en-US'
-)
-
-LANGUAGE = 'pt-BR'
-
-
 class LanguageError(Exception):
     pass
 
+class Language:
+    AVAIL_LANGS = {
+        'pt-BR',
+        'en-US'
+    }
 
-def load_language(language: str) -> dict:
-    try:
-        with open(f'lang/{language}.json', 'r') as f:
-            lang_dict = json.load(f)
-        return lang_dict
-    except FileNotFoundError:
-        raise LanguageError('Could not find language ' + language)
+    LANGUAGE = 'en-US'
 
+    def __init__(self):
+        self.language = self.LANGUAGE
+        self.txt = self.load_language(self.language)
 
-TXT = LANG_DICT = load_language(LANGUAGE)
+    def set_language(self, language: str):
+        if language not in self.AVAIL_LANGS:
+            raise LanguageError(f'{language} is not available. Available languages: {AVAIL_LANGS}')
+        self.language = language
+        self.txt = self.load_language(self.language)
+
+    def load_language(self, language: str) -> dict:
+        try:
+            with open(f'lang/{language}.json', 'r') as f:
+                txt = json.load(f)
+            return txt
+        except FileNotFoundError:
+            raise LanguageError('Could not find language ' + language)
+
+    def __getitem__(self, key):
+        return self.txt[key]
+
+TXT = Language()

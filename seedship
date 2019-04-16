@@ -1,25 +1,12 @@
 #!/usr/bin/env python3
-from src.language import AVAIL_LANGS, load_language
+from src.language import TXT
 from src.prompt import Prompt
 from src.seedship import Seedship
 from src.util import clear_screen, get_screen_size
 
 
-def select_language() -> str:
-    clear_screen()
-    print('#' * 80)
-    print('#' + ' ' * 78 + '#')
-    print('#' + 'Select Language'.center(78) + '#')
-    print('#' + ' ' * 78 + '#')
-    language_string = ''
-    for language in AVAIL_LANGS:
-        pass
-    print('#' * 80)
-    return 'pt-BR'
-
-
-LANGUAGE = 'pt-BR'
-TXT = LANG_DICT = load_language(LANGUAGE)
+LANGUAGE = 'en-US'
+TXT.set_language(LANGUAGE)
 
 clear_screen()
 rows, cols = get_screen_size()
