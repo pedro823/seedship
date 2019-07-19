@@ -1,11 +1,15 @@
 <html>
     <head>
-
+        <link rel="stylesheet" href="node_modules/xterm/dist/xterm.css" />
+        <link rel="stylesheet" href="/node_modules/xterm/dist/addons/fullscreen/fullscreen.css" />
     </head>
     <body>
-        Hello world!
-
+        <div id="terminal"></div>
         <script src="/socket.io/socket.io.js"></script>
-        <script src="/main.js"></script>
+        <script src="/node_modules/xterm/dist/xterm.js"></script>
+        <script src="/node_modules/xterm/dist/addons/fullscreen/fullscreen.js"></script>
+        <script src="/node_modules/xterm/dist/addons/attach/attach.js"></script>
+        <script src="/node_modules/xterm/dist/addons/search/search.js"></script>
+        <script defer src="/main.js"></script>
     </body>
 </html>
