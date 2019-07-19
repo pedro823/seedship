@@ -18,9 +18,9 @@ server.listen(port, () => {
 })
 
 ioServer.on('connection', (socket: io.Socket) => {
-    const seedship = nodepty.spawn('/usr/bin/python3', [], {
+    const seedship = nodepty.spawn('/usr/bin/python3', ['seedship'], {
         name: 'xterm-color',
-        cwd: process.env.PWD,
+        cwd: path.join(process.env.PWD || __dirname, 'game'),
     })
 
     seedship.on('data', (data) => {
