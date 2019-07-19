@@ -1,6 +1,9 @@
 *.pyc
 log/[^.gitkeep]*
 __pycache__/*
+*/__pycache__/
 .imdone/
 .imdone/*
 .vscode
+build/
+node_modules/

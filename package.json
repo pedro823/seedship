@@ -1,0 +1,32 @@
+{
+  "name": "seedship",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node build/",
+    "tsc": "tsc",
+    "dev": "ts-node-dev --respawn --transpileOnly server/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pedro823/seedship.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pedro823/seedship/issues"
+  },
+  "homepage": "https://github.com/pedro823/seedship#readme",
+  "dependencies": {
+    "@types/express": "^4.17.0",
+    "@types/socket.io": "^2.1.2",
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0",
+    "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.0.0-pre.40"
+  }
+}

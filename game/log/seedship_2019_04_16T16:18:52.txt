@@ -1,0 +1,1 @@
+seedship_found_planet 1 -> {"atmosphere": "Good", "gravity": "Good", "temperature": "VeryLow", "water": "PlanetWideOcean", "resources": "NoResource"}
