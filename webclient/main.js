@@ -6,6 +6,9 @@
     const term = new Terminal();
     const container = document.getElementById('terminal');
     term.open(container);
+
+    term.toggleFullScreen(true);
+    
     const socket = io();
 
     term.on('data', (data) => {
