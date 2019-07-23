@@ -1,5 +1,5 @@
 *.pyc
-log/[^.gitkeep]*
+game/log/[^.gitkeep]*
 __pycache__/*
 */__pycache__/
 .imdone/
