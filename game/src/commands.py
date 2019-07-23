@@ -1,10 +1,10 @@
-from src.language import TXT
-from src.util import Color, SeedshipExecutionError
-from src.logger import Logger
-from src.game_stats import GameStats
-from src.landscape import AvailableLandscape
-from src.features import AvailableFeatures
-from src.seedship import Seedship, Scanner
+from .language import TXT
+from .util import Color, SeedshipExecutionError
+from .logger import Logger
+from .game_stats import GameStats
+from .landscape import AvailableLandscape
+from .features import AvailableFeatures
+from .seedship import Seedship, Scanner
 import random as r
 import pickle
 import os
@@ -275,6 +275,7 @@ class AvailableCommands:
             looking_to_print_list.append(('phase', landing_sequence_text['touchdown_phase']))
 
             cls.__run_print_list(looking_to_print_list, 2.8, 5.0)
+            time.sleep(4)
 
         @classmethod
         def __run_print_list(cls,

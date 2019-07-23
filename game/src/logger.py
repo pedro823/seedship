@@ -1,5 +1,5 @@
-from src.planet import Planet
-from src.seedship import Seedship
+from .planet import Planet
+from .seedship import Seedship
 from datetime import datetime
 import os
 import json

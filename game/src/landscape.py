@@ -1,5 +1,5 @@
-from src.util import Color
-from src.language import TXT
+from .util import Color
+from .language import TXT
 
 
 def translate_landscape(type, quality):

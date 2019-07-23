@@ -17,7 +17,7 @@ class Language:
 
     def set_language(self, language: str):
         if language not in self.AVAIL_LANGS:
-            raise LanguageError(f'{language} is not available. Available languages: {AVAIL_LANGS}')
+            raise LanguageError(f'{language} is not available. Available languages: {self.AVAIL_LANGS}')
         self.language = language
         self.txt = self.load_language(self.language)
 

@@ -1,9 +1,9 @@
-from src.parser import Parser
-from src.language import TXT
-from src.util import SeedshipExecutionError
-from src.commands import AvailableCommands, ShowStats
-from src.game_stats import GameStats
-from src.seedship import SeedshipConsumable, Scanner, System, Database, Colonists
+from .parser import Parser
+from .language import TXT
+from .util import SeedshipExecutionError
+from .commands import AvailableCommands, ShowStats
+from .game_stats import GameStats
+from .seedship import SeedshipConsumable, Scanner, System, Database, Colonists
 import time
 import readline
 import atexit

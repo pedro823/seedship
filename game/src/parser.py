@@ -1,5 +1,5 @@
-from src.commands import AvailableCommands
-from src.language import TXT
+from .commands import AvailableCommands
+from .language import TXT
 
 
 def translate_error(error):

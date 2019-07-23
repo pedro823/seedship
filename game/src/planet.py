@@ -1,7 +1,7 @@
-from src.language import TXT
+from .language import TXT
 import random as r
-from src.features import AvailableFeatures
-from src.landscape import AvailableLandscape
+from .features import AvailableFeatures
+from .landscape import AvailableLandscape
 
 
 def translate(attribute: str) -> str:
@@ -41,7 +41,7 @@ class Planet:
     }
 
     @classmethod
-    def from_scanners(cls, scanners: list):
+    def from_scanners(cls, scanners: dict):
         planet_features = {}
         for scanner_name, scanner in scanners.items():
             planet_features[scanner_name] = cls.generate_feature(
@@ -51,9 +51,9 @@ class Planet:
         return Planet(**planet_features)
 
     @classmethod
-    def from_evasion(cls, scanners: list):
+    def from_evasion(cls, scanners: dict):
         planet_features = {}
-        for scanner_name, scanner in scanners.items():
+        for scanner_name in scanners:
             planet_features[scanner_name] = cls.generate_feature(
                 0,
                 cls.possibility_map[scanner_name]
