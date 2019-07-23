@@ -11,13 +11,9 @@
     term.fit();
     
     const socket = io();
-    socket.emit('is-client', {cols: term.cols, rows: term.rows});
+    socket.emit('is-host');
 
-    term.on('data', (data) => {
-        socket.emit('command', data);
-    })
-
-    socket.on('write', (data) => {
+    socket.on('seedship-data', (data) => {
         term.write(data);
-    })
+    });
 })()
