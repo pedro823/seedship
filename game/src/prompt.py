@@ -24,10 +24,13 @@ class Prompt:
 
     @classmethod
     def serve_forever(cls, seedship):
-        status = GameStats()
+        stats = GameStats()
+        cls.__setup_save_at_exit(seedship, stats)
+
         cls.__setup_readline_history()
         readline.parse_and_bind('tab: complete')
         readline.set_completer(TabCompleter(seedship).complete)
+
         while True:
             try:
                 line = input(cls.PROMPT_TEXT)
@@ -37,13 +40,13 @@ class Prompt:
                     continue
                 # Load has special treatment. TODO rethink
                 if parse_result.command == AvailableCommands.Load:
-                    seedship, status = parse_result.command.execute(parse_result.splitted_line, seedship, status)
+                    seedship, stats = parse_result.command.execute(parse_result.splitted_line, seedship, stats)
                     continue
 
-                do_break = parse_result.command.execute(parse_result.splitted_line, seedship, status)
+                do_break = parse_result.command.execute(parse_result.splitted_line, seedship, stats)
                 if do_break:
                     time.sleep(3)
-                    ShowStats.execute(seedship, status)
+                    ShowStats.execute(seedship, stats)
                     break
             except EOFError:
                 print()
@@ -100,10 +103,15 @@ class Prompt:
 
         atexit.register(readline.write_history_file, cls.HISTORY_FILE)
 
+    @classmethod
+    def __setup_save_at_exit(cls, seedship, game_stats):
+        atexit.register(cls.__save_at_exit, seedship, game_stats)
+
+    @classmethod
+    def __save_at_exit(cls, seedship, game_stats):
+        AvailableCommands.Save.execute([], seedship, game_stats)
 
 class TabCompleter:
-
-
     def __init__(self, seedship):
         self.commands = AvailableCommands.all_commands
         self.modules = []

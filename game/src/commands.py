@@ -220,7 +220,10 @@ class AvailableCommands:
             if confirmation != '' and confirmation in yes.lower():
                 stats.end_game()
                 cls.__print_landing_sequence(seedship)
+
+                print(TXT['stats'].get('you_have_landed', '').center(80, ' '))
                 return True
+
             print(translate_phrase('land_confirmation_no'))
             return False
 
@@ -457,7 +460,7 @@ class AvailableCommands:
                     raise cls.RollException(f'invalid_dice', 'd'.join(i))
 
     all_classes = [Save, Load, Damage, Status, Upgrade, Help, Scan, Repair, Evade,
-           Probe, Sleep, Clear, Waste, Idle, Land, Roll]
+           Probe, Sleep, Clear, Waste, Idle, Land, Roll, Exit]
     all_commands = [c.command for c in all_classes]
     command_to_class = dict(zip(all_commands, all_classes))
 
@@ -470,8 +473,6 @@ class ShowStats:
     @staticmethod
     def execute(seedship: Seedship, game_stats: GameStats):
         print()
-        time.sleep(0.1)
-        print(TXT['stats'].get('you_have_landed', '').center(80, ' '))
         time.sleep(0.5)
         print(TXT['stats'].get('game_stats', '').center(80, ' '))
         print(f'+{"-" * 78}+')
