@@ -5,12 +5,12 @@ from src.seedship import Seedship
 from src.util import clear_screen, get_screen_size
 
 
-LANGUAGE = 'en-US'
-TXT.set_language(LANGUAGE)
+TXT.prompt_available_languages()
 
 clear_screen()
 rows, cols = get_screen_size()
-input(rows // 2 * '\n' + '[ENTER PARA COMEÇAR A JORNADA]')
+input(rows // 2 * '\n' + TXT['messages']['start_game'])
+
 clear_screen()
 s = Seedship()
 s.find_new_planet()

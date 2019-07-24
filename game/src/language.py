@@ -1,18 +1,15 @@
 import json
+import os
 
 class LanguageError(Exception):
     pass
 
 class Language:
-    AVAIL_LANGS = {
-        'pt-BR',
-        'en-US'
-    }
-
-    LANGUAGE = 'en-US'
+    AVAIL_LANGS = [language.rstrip('.json') for language in os.listdir('lang/')]
+    DEFAULT_LANGUAGE = 'en-US'
 
     def __init__(self):
-        self.language = self.LANGUAGE
+        self.language = self.DEFAULT_LANGUAGE
         self.txt = self.load_language(self.language)
 
     def set_language(self, language: str):
@@ -28,6 +25,22 @@ class Language:
             return txt
         except FileNotFoundError:
             raise LanguageError('Could not find language ' + language)
+
+    def prompt_available_languages(self):
+        print('Available languages:')
+        for index, language in enumerate(self.AVAIL_LANGS):
+            print(f'{index}    {language}')
+
+        while True:
+            try:
+                language_choice = int(input(f'select language [0 - {len(self.AVAIL_LANGS) - 1}]: '))
+                if 0 <= language_choice < len(self.AVAIL_LANGS):
+                    self.language = self.AVAIL_LANGS[language_choice]
+                    self.txt = self.load_language(self.language)
+                    break
+            except:
+                continue
+
 
     def __getitem__(self, key):
         return self.txt[key]
