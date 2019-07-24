@@ -119,10 +119,11 @@
     "help":    "help                          -- Mostra essa mensagem.",
     "land":    "land                          -- Aterrissa a seedship no planeta atual.",
     "roll":    "roll <[QUANTIA]d[FACES]>      -- Rola dados (ex: roll 2d5 3d10)",
-    "exit":    "exit                          -- sai do programa.",
+    "exit":    "exit                          -- salva e sai do jogo.",
     "repair":  "repair <escaneador> <quantia> -- Repara dano em um módulo."
   },
   "messages": {
+    "start_game": "[APERTE ENTER PARA COMEÇAR A AVENTURA]",
     "enter_to_wake_up": "aperte enter para acordar",
     "sum_die": "Soma dos dados",
     "are_you_sure": "Você tem certeza?",
@@ -297,7 +298,7 @@
     }
   },
   "stats": {
-    "you_have_landed": "Você aterrisou.",
+    "you_have_landed": "Você aterrissou.",
     "game_stats": "Estatísticas da aventura",
     "time_elapsed": "Tempo decorrido",
     "planets_scanned": "Planetas escaneados",
