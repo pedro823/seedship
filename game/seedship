@@ -9,7 +9,7 @@ TXT.prompt_available_languages()
 
 clear_screen()
 rows, cols = get_screen_size()
-input(rows // 2 * '\n' + TXT['messages']['start_game'])
+input(rows // 2 * '\n' + TXT['messages']['start_game'].center(cols))
 
 clear_screen()
 s = Seedship()
