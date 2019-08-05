@@ -19,6 +19,59 @@ def translate_phrase(phrase: str) -> str:
     return TXT['messages'].get(phrase, phrase)
 
 
+class DiceParser:
+
+    class RollException(SeedshipExecutionError):
+
+        def __init__(self, message: str, dice: str):
+            super().__init__(message)
+            self.dice = dice
+
+    class Dice:
+        
+        def __init__(self, amount: int, faces: int):
+            self.amount, self.faces = amount, faces
+
+        def __str__(self):
+            return f'{self.amount}d{self.faces}'
+
+    @classmethod
+    def parse_int_or_dice(cls, string: str) -> int:
+        try:
+            return int(string)
+        except ValueError:
+            return cls.roll_dice(cls.parse_dice(string))
+
+    @classmethod
+    def roll_dice(cls, parsed_dice: Dice) -> list:
+        amount, faces = parsed_dice.amount, parsed_dice.faces
+        sum_of_dice = sum(r.randint(1, faces) for _ in range(amount))
+        print(f'{Color.LIGHT_GRAY}{parsed_dice} => {sum_of_dice}{Color.RESET}')
+        return sum_of_dice
+
+    @classmethod
+    def parse_dice(cls, string: str) -> Dice:
+        splitted_string = string.split('d')
+        if len(splitted_string) != 2:
+            raise cls.RollException('invalid_dice', string)
+        
+        try:
+            amount, faces = map(int, splitted_string)
+            if amount <= 0 or faces <= 0:
+                raise ValueError()
+            return cls.Dice(amount, faces)
+
+        except ValueError:
+            raise cls.RollException('invalid_dice', string)
+
+    @classmethod
+    def get_dice(cls, splitted_line: list):
+        for dice in splitted_line[1:]: # strips command
+            try:
+                yield cls.parse_dice(dice)
+            except ValueError:
+                raise cls.RollException(f'invalid_dice', dice)
+
 class PlanetRelatedCommand:
     @classmethod
     def print_scan_result(cls, scan_result):
@@ -84,8 +137,8 @@ class AvailableCommands:
                 raise SeedshipExecutionError('module_doesnt_exist')
 
             try:
-                amount = int(splitted_line[2])
-            except ValueError:
+                amount = DiceParser.parse_int_or_dice(splitted_line[2])
+            except:
                 raise SeedshipExecutionError('invalid_amount')
 
             translated_modules[module_to_damage].damage(amount)
@@ -100,8 +153,8 @@ class AvailableCommands:
         def execute(splitted_line, seedship, stats: GameStats) -> None:
             consumable_to_waste = splitted_line[1].lower()
             try:
-                amount = int(splitted_line[2])
-            except ValueError:
+                amount = DiceParser.parse_int_or_dice(splitted_line[2])
+            except:
                 raise SeedshipExecutionError('invalid_amount')
 
             translated_consumables = {consumable.name.lower(): consumable
@@ -424,21 +477,15 @@ class AvailableCommands:
         command = translate_command('roll')
         argument_count = -1
 
-        class RollException(SeedshipExecutionError):
-
-            def __init__(self, message: str, dice: str):
-                super().__init__(message)
-                self.dice = dice
 
         @classmethod
         def execute(cls, splitted_line, seedship, stats: GameStats) -> None:
             translated_sum = TXT['messages'].get('sum_die', 'Sum of die')
-            for amount, faces in cls.parse_dice(splitted_line):
+            for dice in DiceParser.get_dice(splitted_line):
+                amount, faces = dice.amount, dice.faces
                 sum_dice = 0
                 print('-' * 10 + f' {amount}d{faces}:')
                 for dice in range(1, amount + 1):
-                    if faces < 1:
-                        raise cls.RollException('invalid_dice', f'{amount}d{faces}')
                     roll = r.randint(1, faces)
                     print(Color.LIGHT_BLUE
                           + f'{amount}d{faces}: '
@@ -449,15 +496,6 @@ class AvailableCommands:
                     sum_dice += roll
                 print(f'{translated_sum}: {sum_dice}')
             print('-' * 10)
-
-        @classmethod
-        def parse_dice(cls, splitted_line: list) -> list:
-            formatted_line = [dice.split('d') for dice in splitted_line[1:]]
-            for i in formatted_line:
-                try:
-                    yield int(i[0]), int(i[1])
-                except ValueError:
-                    raise cls.RollException(f'invalid_dice', 'd'.join(i))
 
     all_classes = [Save, Load, Damage, Status, Upgrade, Help, Scan, Repair, Evade,
            Probe, Sleep, Clear, Waste, Idle, Land, Roll, Exit]

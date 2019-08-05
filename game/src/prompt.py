@@ -1,7 +1,7 @@
 from .parser import Parser
 from .language import TXT
 from .util import SeedshipExecutionError
-from .commands import AvailableCommands, ShowStats
+from .commands import AvailableCommands, ShowStats, DiceParser
 from .game_stats import GameStats
 from .seedship import SeedshipConsumable, Scanner, System, Database, Colonists
 import time
@@ -83,13 +83,12 @@ class Prompt:
         if len(splitted_line) < 1:
             return
 
-        if isinstance(exception, AvailableCommands.Roll.RollException):
+        if isinstance(exception, DiceParser.RollException):
             print(f'{translated_exception}: {exception.dice}')
             return
         if exception_string == 'invalid_amount':
-            if len(splitted_line) < 2:
-                return
-            print(f'{translated_exception}: {splitted_line[2]}')
+            if len(splitted_line) >= 2:
+                print(f'{translated_exception}: {splitted_line[2]}')
             return
         print(f'{translated_exception}: {splitted_line[1]}')
 

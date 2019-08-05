@@ -64,7 +64,6 @@ class Parser:
             return True
         return len(splitted_line) - 1 == command_class.argument_count
 
-
 if __name__ == '__main__':
     from seedship import Seedship
     sdshp = Seedship()
