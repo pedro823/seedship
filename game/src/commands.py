@@ -28,7 +28,7 @@ class DiceParser:
             self.dice = dice
 
     class Dice:
-        
+
         def __init__(self, amount: int, faces: int):
             self.amount, self.faces = amount, faces
 
@@ -54,7 +54,7 @@ class DiceParser:
         splitted_string = string.split('d')
         if len(splitted_string) != 2:
             raise cls.RollException('invalid_dice', string)
-        
+
         try:
             amount, faces = map(int, splitted_string)
             if amount <= 0 or faces <= 0:
@@ -192,15 +192,17 @@ class AvailableCommands:
             to_be_repaired = splitted_line[1].lower()
 
             try:
-                amount = int(splitted_line[2])
-            except ValueError:
+                amount = DiceParser.parse_int_or_dice(splitted_line[2])
+            except:
                 raise SeedshipExecutionError('invalid_amount')
 
-            # to_be_repaired should be consumable or a database
+            # to_be_repaired should be consumable, scanner or a database
             repairable = {consumable.name.lower(): consumable
                            for consumable in seedship.consumables}
             repairable.update({database.name.lower(): database
                                 for database in seedship.databases.values()})
+            repairable.update({scanner.name.lower(): scanner
+                                for scanner in seedship.scanners.values()})
 
             if to_be_repaired not in repairable:
                 raise SeedshipExecutionError('not_repairable')

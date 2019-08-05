@@ -96,6 +96,11 @@ class Scanner(SeedshipModule):
         ''' Scan hits the target? '''
         return r.randint(1, 100) <= self.health
 
+    def repair(self, amount: int):
+        if amount < 0:
+            raise SeedshipExecutionError('invalid_amount')
+        self.health = min(self.health + amount, self.full_health)
+
 
 class System(SeedshipModule):
     ''' Represent a landing/construction system inside the seedship. '''
