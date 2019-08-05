@@ -99,6 +99,7 @@
     "damage": "damage",
     "status": "status",
     "upgrade": "upgrade",
+    "repair": "repair",
     "help": "help",
     "probe": "probe",
     "sleep": "sleep",
