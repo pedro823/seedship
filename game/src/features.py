@@ -287,7 +287,7 @@ class AvailableFeatures:
                 'monuments': 0.4,
                 'satellites': 1.0
             }
-            probability = [25, 0, 0]  # 0, 1, 2
+            probability = [25, 5, 0]  # 0, 1, 2
 
         class Scarce:
             text = translate_feature('resources', 'scarce')
