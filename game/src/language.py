@@ -41,6 +41,8 @@ class Language:
                     break
             except EOFError:
                 sys.exit(1)
+            except json.JSONDecodeError as e:
+                print(f'Error parsing language file: {e}')
             except:
                 continue
 
