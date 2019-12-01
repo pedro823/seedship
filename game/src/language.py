@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 
 class LanguageError(Exception):
     pass
@@ -38,6 +39,8 @@ class Language:
                     self.language = self.AVAIL_LANGS[language_choice]
                     self.txt = self.load_language(self.language)
                     break
+            except EOFError:
+                sys.exit(1)
             except:
                 continue
 
