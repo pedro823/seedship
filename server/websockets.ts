@@ -14,7 +14,7 @@ export const setupWebSockets = (ioServer: io.Server, gameRoot: string) => {
         })
 
         socket.on('is-client', ({rows, cols}) => {
-            seedship = nodepty.spawn('/usr/bin/python3', ['seedship'], {
+            seedship = nodepty.spawn('python3', ['seedship'], {
                 name: 'xterm-color',
                 cwd: gameRoot,
                 rows,

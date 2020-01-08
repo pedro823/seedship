@@ -119,9 +119,11 @@
     "sleep":   "sleep                         -- Puts the Artificial Intelligence to rest.",
     "help":    "help                          -- Shows this message.",
     "land":    "land                          -- Lands the seedship in the nearest planet.",
-    "roll":    "roll <[AMOUNT]d[FACES]>       -- Rolls dice (e.g.: roll 2d5 3d10)",
+    "roll":    "roll <[AMOUNT]d[FACES]>       -- Rolls dice (e.g.: roll 2d5 3d10).",
     "exit":    "exit                          -- saves and exits the game.",
-    "repair":  "repair <scanner> <amount>     -- Repairs damage in a seedship module."
+    "repair":  "repair <scanner> <amount>     -- Repairs damage in a seedship module.",
+    "save":    "save                          -- Saves the game. Overwrites last save.",
+    "load":    "load                          -- Loads the last save. Overwrites current game."
   },
   "messages": {
     "start_game": "[PRESS ENTER TO START THE ADVENTURE]",

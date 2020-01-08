@@ -121,7 +121,9 @@
     "land":    "land                          -- Aterrissa a seedship no planeta atual.",
     "roll":    "roll <[QUANTIA]d[FACES]>      -- Rola dados (ex: roll 2d5 3d10)",
     "exit":    "exit                          -- salva e sai do jogo.",
-    "repair":  "repair <escaneador> <quantia> -- Repara dano em um módulo ou reabastece o combustivel."
+    "repair":  "repair <escaneador> <quantia> -- Repara dano em um módulo ou reabastece o combustivel.",
+    "save":    "save                          -- salva o jogo. (Sobreescreve o anterior)",
+    "load":    "load                          -- recarrega o último save do jogo."
   },
   "messages": {
     "start_game": "[APERTE ENTER PARA COMEÇAR A AVENTURA]",

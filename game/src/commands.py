@@ -306,14 +306,14 @@ class AvailableCommands:
             if is_low_on_fuel:
                 looking_to_print_list.append(('error', failure_text['space_phase']['low_fuel']))
 
-            cls.__run_print_list(looking_to_print_list, 2.0, 4.0)
+            cls.__run_print_list(looking_to_print_list, 2.0, 3.0)
             # Atmosphere phase
             looking_to_print_list.append(('phase', landing_sequence_text['atmosphere_phase']))
             if is_low_on_fuel:
                 looking_to_print_list.append(('error',
                                               failure_text['atmosphere_phase']['low_fuel']))
 
-            cls.__run_print_list(looking_to_print_list, 2.0, 4.0)
+            cls.__run_print_list(looking_to_print_list, 2.0, 3.0)
             # Glide phase
             looking_to_print_list.append(('phase', landing_sequence_text['glide_phase']))
             if is_low_on_fuel:
@@ -328,11 +328,11 @@ class AvailableCommands:
                 looking_to_print_list.append(('error',
                                              failure_text['glide_phase']['planet_wide_ocean']))
 
-            cls.__run_print_list(looking_to_print_list, 2.5, 5.0)
+            cls.__run_print_list(looking_to_print_list, 2.0, 4.0)
             # touchdown phase
             looking_to_print_list.append(('phase', landing_sequence_text['touchdown_phase']))
 
-            cls.__run_print_list(looking_to_print_list, 2.8, 5.0)
+            cls.__run_print_list(looking_to_print_list, 2.5, 4.0)
             time.sleep(4)
 
         @classmethod
