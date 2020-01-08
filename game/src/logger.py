@@ -51,6 +51,12 @@ class Logger:
         with open(cls.log_file, mode='a') as f:
             f.write(f'seedship_wasted {json.dumps(waste)} {json.dumps(seedship.to_dict())}\n')
 
+    @classmethod
+    @create_log_folder
+    def log_seed(cls, seed: int):
+        ''' Logs seed of RNG used in the game '''
+        with open(cls.log_file, mode='a') as f:
+            f.write(f'RNG seed = {seed}')
 
 if __name__ == '__main__':
     s = Seedship()

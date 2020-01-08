@@ -4,9 +4,11 @@ from .util import SeedshipExecutionError
 from .commands import AvailableCommands, ShowStats, DiceParser
 from .game_stats import GameStats
 from .seedship import SeedshipConsumable, Scanner, System, Database, Colonists
+from .logger import Logger
 import time
 import readline
 import atexit
+import random
 
 
 def translate_exception(exception):
@@ -30,6 +32,8 @@ class Prompt:
         cls.__setup_readline_history()
         readline.parse_and_bind('tab: complete')
         readline.set_completer(TabCompleter(seedship).complete)
+
+        cls.__generate_and_log_seed()
 
         while True:
             try:
@@ -109,6 +113,12 @@ class Prompt:
     @classmethod
     def __save_at_exit(cls, seedship, game_stats):
         AvailableCommands.Save.execute([], seedship, game_stats)
+
+    @staticmethod
+    def __generate_and_log_seed():
+        random_seed = random.randrange(2 ** 20)
+        random.seed(random_seed)
+        Logger.log_seed(random_seed)
 
 class TabCompleter:
     def __init__(self, seedship):
