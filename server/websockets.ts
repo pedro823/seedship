@@ -20,13 +20,13 @@ export const setupWebSockets = (ioServer: io.Server, gameRoot: string) => {
                 rows,
                 cols,
             })
-            seedship.on('data', (data) => {
+            seedship.on('data', (data: string) => {
                 hostSockets.forEach(hostSocket => {
                     hostSocket.emit('seedship-data', data)
                 })
                 socket.emit('write', data)
             })
-            socket.on('command', (data) => {
+            socket.on('command', (data: string) => {
                 if (seedship) {
                     seedship.write(data)
                 }
