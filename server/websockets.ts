@@ -14,29 +14,32 @@ export const setupWebSockets = (ioServer: io.Server, gameRoot: string) => {
         })
 
         socket.on('is-client', ({rows, cols}) => {
-            seedship = nodepty.spawn('python3', ['seedship'], {
-                name: 'xterm-color',
-                cwd: gameRoot,
-                rows,
-                cols,
-            })
+            if (!seedship) {
+                seedship = nodepty.spawn('python3', ['seedship'], {
+                    name: 'xterm-color',
+                    cwd: gameRoot,
+                    rows,
+                    cols,
+                })
+            } else {
+                // ctrl+c character, so that the prompt reappears
+                seedship.write('\x03')
+            }
             seedship.on('data', (data: string) => {
                 hostSockets.forEach(hostSocket => {
                     hostSocket.emit('seedship-data', data)
                 })
                 socket.emit('write', data)
             })
-            socket.on('command', (data: string) => {
-                if (seedship) {
-                    seedship.write(data)
-                }
-            })
+        })
+
+        socket.on('command', (data: string) => {
+            if (seedship) {
+                seedship.write(data)
+            }
         })
         
         socket.on('disconnect', () => {
-            if (seedship) {
-                seedship.kill()
-            }
             hostSockets.delete(socket)
         })
     })
